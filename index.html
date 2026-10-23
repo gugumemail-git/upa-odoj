@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="id" class="">
+<html lang="id" class="overflow-x-hidden w-full">
 <head>
     <meta charset="UTF-8">
+    <!-- PERBAIKAN: Gunakan device-width agar lebar mengikuti layar HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Laporan ODOJ — Grup UPA 3216M010</title>
     
@@ -31,7 +32,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* PERBAIKAN: Pastikan html dan body mencegah overflow horizontal */
+        html {
+            width: 100%;
+            overflow-x: hidden;
+        }
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -70,6 +81,7 @@
             border-collapse: separate !important;
             border-spacing: 0;
             border: 1px solid #e2e8f0;
+            width: 100%;
         }
         .dark .table-rekap { border-color: #334155; }
         
@@ -132,8 +144,9 @@
         .hidden-menu { display: none !important; }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full max-w-full">
 
+    <!-- SIDEBAR (DESKTOP) -->
     <aside class="hidden md:flex w-64 glass-panel flex-col justify-between shrink-0 h-screen z-30 border-r border-slate-200/50 dark:border-slate-800/50">
         <div class="flex-1 min-h-0 flex flex-col">
             <div class="p-6 flex items-center space-x-3">
@@ -170,10 +183,12 @@
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative w-full">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-200/40 dark:bg-brand-900/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden relative w-full max-w-full">
+        <!-- PERBAIKAN: Batasi posisi blob blur agar tidak keluar dari layar HP -->
+        <div class="absolute top-0 left-0 md:left-1/4 w-72 h-72 md:w-96 md:h-96 bg-brand-200/40 dark:bg-brand-900/20 rounded-full blur-3xl -z-10 pointer-events-none max-w-full"></div>
 
-        <header class="sticky top-0 z-20 px-4 md:px-8 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 glass-panel border-b border-white/20 dark:border-slate-800/30 w-full">
+        <header class="sticky top-0 z-20 px-4 md:px-8 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 glass-panel border-b border-white/20 dark:border-slate-800/30 w-full max-w-full">
             <div class="flex md:hidden items-center gap-3">
                 <div class="bg-brand-600 text-white p-2 rounded-xl shadow-md">
                     <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -248,7 +263,9 @@
 
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8 w-full">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight" id="calendarMonthYear">Laporan Tilawah Oktober 2026</h3>
+                        <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+                            Laporan Tilawah<br><span id="calendarMonthYear" class="text-lg md:text-xl text-brand-600">Oktober 2026</span>
+                        </h3>
                         <div class="flex items-center gap-1 shrink-0">
                             <button onclick="navigatePeriod(-1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
                                 <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
@@ -284,7 +301,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 2: MUTABAAH YAUMIYAH (KHUSUS LOGIN) -->
             <div id="section-mutabaah" class="scroll-mt-24 hidden w-full fade-in">
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
                     <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
@@ -305,36 +321,43 @@
                 </div>
             </div>
 
-            <!-- SECTION 3: REKAP & ANALITIK -->
             <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full fade-in">
                 
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full overflow-hidden">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
                         <div>
                             <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI TILAWAH</h2>
                             <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
                         </div>
-                        <span class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">ODOJ Group</span>
+                        <div class="flex items-center gap-2">
+                            <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer">
+                            </select>
+                            <select id="filterRekapTahun" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer">
+                            </select>
+                        </div>
                     </div>
-                    <div class="overflow-x-auto rounded-xl w-full max-h-[70vh]">
+                    <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
                         <table class="w-full text-xs text-left table-rekap min-w-[600px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
                                 <tr>
-                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[20%]">Kriteria</th>
-                                    <th id="header-nama-tilawah" colspan="1" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">NAMA ANGGOTA</th>
+                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[15%]">NAMA</th>
+                                    <th colspan="5" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
                                 </tr>
-                                <tr id="thead-nama-tilawah" class="bg-brand-600 text-white font-bold text-[10px]">
-                                    <!-- Nama Anggota di-generate via JS -->
+                                <tr class="bg-brand-600 text-white font-bold text-[10px]">
+                                    <th class="px-2 py-2 border-r border-brand-500/50">KHOLAS</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50">PROGRESS</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50">TDK LAPOR</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50">KURANG 1 JUZ</th>
+                                    <th class="px-2 py-2">TDK TILAWAH</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-rekap-tilawah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center">
-                                <!-- Baris Kriteria di-generate via JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu">
+                <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
                     <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
                         <div>
                             <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
@@ -342,19 +365,29 @@
                         </div>
                         <span class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">12 Amalan</span>
                     </div>
-                    <div class="overflow-x-auto rounded-xl w-full max-h-[70vh]">
-                        <table class="w-full text-xs text-left table-rekap min-w-[700px] table-sticky-header">
+                    <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
+                        <table class="w-full text-xs text-left table-rekap min-w-[1000px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
                                 <tr>
-                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[20%]">Amalan</th>
-                                    <th id="header-nama-mutabaah" colspan="1" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">NAMA ANGGOTA</th>
+                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
+                                    <th colspan="12" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
                                 </tr>
-                                <tr id="thead-nama-mutabaah" class="bg-brand-600 text-white font-bold text-[10px]">
-                                    <!-- Nama Anggota di-generate via JS -->
+                                <tr class="bg-brand-600 text-white font-bold text-[9px] leading-tight">
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">TILAWAH<br>AL-QUR'AN</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">QIYAMULLAIL</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">PUASA<br>SUNNAH</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">DZIKIR<br>PAGI</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">DZIKIR<br>PETANG</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">OLAHRAGA</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">MENDOAKAN<br>QIYADAH PKS<br>& JAMAAH</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">INFAQ</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">BACA<br>TERJEMAH<br>AL-QUR'AN</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">ISTIGHFAR<br>MINIMAL<br>100X</th>
+                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">SHALAWAT<br>MINIMAL<br>100X</th>
+                                    <th class="px-2 py-2 w-[7.5%]">SHALAT<br>BERJAMAAH</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center">
-                                <!-- Baris Amalan di-generate via JS -->
                             </tbody>
                         </table>
                     </div>
@@ -429,9 +462,6 @@
     </div>
 
     <script type="module">
-        // ==========================================
-        // IMPORT FIREBASE SDK
-        // ==========================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -450,9 +480,6 @@
         const db = getDatabase(app);
         const dbRef = ref(db, 'odoj_data');
 
-        // ==========================================
-        // STATE & KONSTANTA
-        // ==========================================
         const BULAN_LIST = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
         let ANGGOTA = ["Daman","Dendi","Gugum","Risyad","Rojak"];
         const AUTH_KEY = 'ODOJ_IS_LOGGED_IN';
@@ -488,16 +515,13 @@
         let dataStore = {};
         let mutabaahStore = {};
         let activeEditDay = null;
-        let currentMutabaahDate = ''; // Variabel untuk mengingat tanggal mutabaah
+        let currentMutabaahDate = '';
         let chartDonut, chartBar;
 
         const getDaysInMonth = (m,y) => new Date(y, m+1, 0).getDate();
         const getKey = () => `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`;
         const getMonthKey = (nama) => `${getKey()}|${nama}`;
 
-        // ==========================================
-        // LOGIKA DATABASE (FIREBASE)
-        // ==========================================
         function initFirebaseSync() {
             onValue(dbRef, (snapshot) => {
                 const cloudData = snapshot.val();
@@ -507,6 +531,7 @@
                     if (cloudData.mutabaah) mutabaahStore = cloudData.mutabaah;
                 }
                 populateFilters();
+                populateRekapFilters();
                 renderAll();
                 if (!document.getElementById('section-mutabaah').classList.contains('hidden')) {
                     initMutabaahDateInput();
@@ -545,9 +570,6 @@
             if(dataStore[key]) { delete dataStore[key][day]; saveData(); }
         }
 
-        // ==========================================
-        // LOGIKA AUTENTIKASI
-        // ==========================================
         function checkAuth() {
             const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
             const btnText = document.getElementById('auth-btn-text');
@@ -619,9 +641,6 @@
             }
         }
 
-        // ==========================================
-        // FUNGSI UI & RENDER
-        // ==========================================
         function populateFilters() {
             const fn = document.getElementById('filterNama');
             if (!ANGGOTA.includes(selectedNama)) selectedNama = ANGGOTA[0];
@@ -629,6 +648,27 @@
             let optionsHtml = ANGGOTA.map(n=>`<option value="${n}" ${n===selectedNama?'selected':''}>${n}</option>`).join('');
             optionsHtml += `<option value="ADD_NEW" class="font-bold text-brand-600">+ Tambah Anggota</option>`;
             fn.innerHTML = optionsHtml;
+        }
+
+        function populateRekapFilters() {
+            const fb = document.getElementById('filterRekapBulan');
+            const ft = document.getElementById('filterRekapTahun');
+            
+            fb.innerHTML = BULAN_LIST.map((b,i)=>`<option value="${i}" ${i===selectedBulan?'selected':''}>${b}</option>`).join('');
+            
+            let years = '';
+            for(let y=2024; y<=2030; y++) years += `<option value="${y}" ${y===selectedTahun?'selected':''}>${y}</option>`;
+            ft.innerHTML = years;
+        }
+
+        function onFilterRekapChange() {
+            selectedBulan = parseInt(document.getElementById('filterRekapBulan').value);
+            selectedTahun = parseInt(document.getElementById('filterRekapTahun').value);
+            
+            const mainBulan = document.getElementById('filterBulan');
+            if(mainBulan) mainBulan.value = selectedBulan;
+            
+            renderAll();
         }
 
         function onFilterChange() {
@@ -704,7 +744,10 @@
             document.getElementById('page-title').textContent = titles[menuId];
             
             if (menuId === 'mutabaah') initMutabaahDateInput();
-            if (menuId === 'rekap') renderRekapDanKPI();
+            if (menuId === 'rekap') {
+                populateRekapFilters();
+                renderRekapDanKPI();
+            }
         }
 
         function toggleDarkMode() {
@@ -731,6 +774,7 @@
             selectedBulan = idx; 
             selectedTahun = tahun;
             
+            populateRekapFilters();
             renderAll();
             initMutabaahDateInput();
         }
@@ -741,7 +785,7 @@
             document.getElementById('rekapMutabaahPeriode').textContent = periodeStr;
             document.getElementById('chartNamaLabel').textContent = selectedNama;
             document.getElementById('streakName').textContent = selectedNama;
-            document.getElementById('calendarMonthYear').textContent = `Laporan Tilawah ${periodeStr}`;
+            document.getElementById('calendarMonthYear').textContent = periodeStr; 
             document.getElementById('mutabaahNama').textContent = selectedNama;
             
             renderCalendar();
@@ -810,7 +854,6 @@
             input.min = minDate;
             input.max = maxDate;
 
-            // Perbaikan Bug: Jangan reset jika currentMutabaahDate masih di bulan yang sama
             if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
                 const today = new Date();
                 if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
@@ -826,7 +869,7 @@
 
         function onMutabaahDateChange() {
             const input = document.getElementById('mutabaahDateInput');
-            currentMutabaahDate = input.value; // Simpan tanggal yang dipilih
+            currentMutabaahDate = input.value;
             renderMutabaah();
         }
 
@@ -860,7 +903,7 @@
             if (!mutabaahStore[storeKey]) { mutabaahStore[storeKey] = {}; }
             mutabaahStore[storeKey][index] = !mutabaahStore[storeKey][index];
             saveData();
-            renderMutabaah(); // Ini tidak akan mereset tanggal lagi karena currentMutabaahDate tersimpan
+            renderMutabaah();
             if (document.getElementById('section-rekap').classList.contains('hidden') === false) {
                 renderRekapDanKPI();
             }
@@ -908,64 +951,44 @@
             document.getElementById('kpiHariTerisi').textContent = meStats.terisi;
             document.getElementById('kpiTotalHari').textContent = meStats.totalHari;
 
-            const headerNamaTilawah = document.getElementById('header-nama-tilawah');
-            const theadNamaTilawah = document.getElementById('thead-nama-tilawah');
             const tbodyRekapTilawah = document.getElementById('tbody-rekap-tilawah');
             
-            headerNamaTilawah.colSpan = ANGGOTA.length;
-            theadNamaTilawah.innerHTML = ANGGOTA.map(n => `<th class="px-2 py-2 border-r border-brand-500/50 text-center bg-brand-600">${n}</th>`).join('');
-            
-            const kriteriaList = [
-                { label: 'Kholas', key: 'kholas', color: 'text-brand-700 dark:text-brand-400' },
-                { label: 'Progress', key: 'progress', color: 'text-amber-700 dark:text-amber-400' },
-                { label: 'Tdk Lapor', key: 'tidak-laporan', color: 'text-pink-700 dark:text-pink-400' },
-                { label: 'Kurang', key: 'kurang', color: 'text-slate-600 dark:text-slate-400' },
-                { label: 'Tdk Tilawah', key: 'tidak-tilawah', color: 'text-rose-700 dark:text-rose-400' }
-            ];
-
-            tbodyRekapTilawah.innerHTML = kriteriaList.map(krit => {
-                const cells = ANGGOTA.map(nama => {
-                    const s = computeStats(nama);
-                    let val = s[krit.key];
-                    if (val === 0) val = '-';
-                    
-                    const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10' : '';
-                    return `<td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle ${krit.color} ${isActive}">${val}</td>`;
-                }).join('');
+            tbodyRekapTilawah.innerHTML = ANGGOTA.map(nama => {
+                const s = computeStats(nama);
+                const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10 font-bold' : '';
+                
+                const fmtVal = (v) => v === 0 ? '-' : v;
 
                 return `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
                         <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                            ${krit.label}
+                            ${nama} ${isActive ? ' <span class="text-[9px] bg-brand-600 text-white px-1.5 py-0.5 rounded ml-1">Aktif</span>' : ''}
                         </td>
-                        ${cells}
+                        <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-brand-700 dark:text-brand-400">${fmtVal(s.kholas)}</td>
+                        <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-amber-700 dark:text-amber-400">${fmtVal(s.progress)}</td>
+                        <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-pink-700 dark:text-pink-400">${fmtVal(s['tidak-laporan'])}</td>
+                        <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-slate-600 dark:text-slate-400">${fmtVal(s.kurang)}</td>
+                        <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-rose-700 dark:text-rose-400">${fmtVal(s['tidak-tilawah'])}</td>
                     </tr>`;
             }).join('');
 
             if (localStorage.getItem(AUTH_KEY) === 'true') {
-                const headerNamaMutabaah = document.getElementById('header-nama-mutabaah');
-                const theadNamaMutabaah = document.getElementById('thead-nama-mutabaah');
                 const tbodyRekapMutabaah = document.getElementById('tbody-rekap-mutabaah');
                 
-                headerNamaMutabaah.colSpan = ANGGOTA.length;
-                theadNamaMutabaah.innerHTML = ANGGOTA.map(n => `<th class="px-2 py-2 border-r border-brand-500/50 text-center bg-brand-600">${n}</th>`).join('');
-                
-                tbodyRekapMutabaah.innerHTML = MUTABAAH_LIST.map((amalan, idx) => {
-                    const cells = ANGGOTA.map(nama => {
-                        const { stats } = computeMutabaahStatsPerAmalan(nama);
-                        const val = stats[idx];
-                        
+                tbodyRekapMutabaah.innerHTML = ANGGOTA.map(nama => {
+                    const { stats } = computeMutabaahStatsPerAmalan(nama);
+                    const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10 font-bold' : '';
+
+                    const cells = stats.map(val => {
                         const displayVal = val > 0 ? val : '-';
                         const colorClass = val > 0 ? 'text-brand-800 dark:text-brand-200 font-bold' : 'text-slate-300 dark:text-slate-600';
-                        
-                        const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10' : '';
-                        return `<td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle ${colorClass} ${isActive}">${displayVal}</td>`;
+                        return `<td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle ${colorClass}">${displayVal}</td>`;
                     }).join('');
 
                     return `
-                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">
-                            <td class="px-3 py-3 font-semibold text-slate-800 dark:text-slate-200 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                                ${amalan}
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
+                            <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                ${nama} ${isActive ? ' <span class="text-[9px] bg-brand-600 text-white px-1.5 py-0.5 rounded ml-1">Aktif</span>' : ''}
                             </td>
                             ${cells}
                         </tr>`;
@@ -1087,9 +1110,6 @@
             renderAll();
         }
 
-        // ==========================================
-        // INISIALISASI
-        // ==========================================
         window.handleAuthClick = handleAuthClick;
         window.closeLoginModal = closeLoginModal;
         window.handleLogin = handleLogin;
@@ -1103,6 +1123,7 @@
         window.pickDelete = pickDelete;
         window.toggleMutabaah = toggleMutabaah;
         window.onMutabaahDateChange = onMutabaahDateChange;
+        window.onFilterRekapChange = onFilterRekapChange;
 
         function init() {
             checkAuth();
