@@ -4,16 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Laporan ODOJ — Grup UPA 3216M010</title>
-    <!-- Tautan ke Manifest -->
+    
+    <!-- Tautan ke Manifest PWA -->
     <link rel="manifest" href="/manifest.json">
-    
-    <!-- Warna tema untuk browser di Android -->
     <meta name="theme-color" content="#059669">
-    
-    <!-- Ikon untuk perangkat iOS (Apple) -->
     <link rel="apple-touch-icon" href="/icon-192x192.png">
-    
-    <!-- Ikon favicon untuk browser -->
     <link rel="icon" type="image/png" href="/icon-192x192.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -139,7 +134,6 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full overflow-x-hidden">
 
-    <!-- SIDEBAR (DESKTOP) -->
     <aside class="hidden md:flex w-64 glass-panel flex-col justify-between shrink-0 h-screen z-30 border-r border-slate-200/50 dark:border-slate-800/50">
         <div class="flex-1 min-h-0 flex flex-col">
             <div class="p-6 flex items-center space-x-3">
@@ -176,7 +170,6 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative w-full">
         <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-200/40 dark:bg-brand-900/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
@@ -315,7 +308,6 @@
             <!-- SECTION 3: REKAP & ANALITIK -->
             <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full fade-in">
                 
-                <!-- Tabel Rekap Tilawah -->
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full">
                     <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
                         <div>
@@ -342,7 +334,6 @@
                     </div>
                 </div>
 
-                <!-- Tabel Rekap Mutabaah (KHUSUS LOGIN) -->
                 <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu">
                     <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
                         <div>
@@ -369,7 +360,6 @@
                     </div>
                 </div>
 
-                <!-- Grafik Tilawah -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
                         <div class="flex items-center justify-between mb-4">
@@ -387,7 +377,6 @@
         </main>
     </div>
 
-    <!-- BOTTOM NAVIGATION (MOBILE) -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/20 dark:border-slate-800/50 z-40 pb-safe">
         <div class="flex justify-around items-center h-16">
             <button id="mobile-menu-harian" onclick="switchSection('section-harian', 'harian')" class="flex flex-col items-center justify-center w-full h-full text-brand-600 dark:text-brand-400 transition-colors duration-200">
@@ -413,7 +402,6 @@
         </div>
     </div>
 
-    <!-- BOTTOM SHEET MODAL -->
     <div id="sheetOverlay" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
     <div id="bottomSheet" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl z-[60] p-6 transition-transform duration-300 translate-y-full max-h-[85vh] overflow-y-auto border-t border-slate-200 dark:border-slate-800">
         <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-5"></div>
@@ -426,7 +414,6 @@
         <div id="sheetOptions" class="grid grid-cols-1 gap-2 pb-6"></div>
     </div>
 
-    <!-- LOGIN MODAL -->
     <div id="loginModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800">
             <div class="flex items-center justify-between mb-4">
@@ -443,16 +430,15 @@
 
     <script type="module">
         // ==========================================
-        // IMPORT FIREBASE SDK (Versi Modern)
+        // IMPORT FIREBASE SDK
         // ==========================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // Konfigurasi Firebase Anda
         const firebaseConfig = {
             apiKey: "AIzaSyANO_XFRAfVCRJSh_PyX8ECF1VEfViTIiM",
             authDomain: "laporan-odoj.firebaseapp.com",
-            databaseURL: "https://laporan-odoj-default-rtdb.asia-southeast1.firebasedatabase.app", // URL Database wajib ditambahkan manual
+            databaseURL: "https://laporan-odoj-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "laporan-odoj",
             storageBucket: "laporan-odoj.firebasestorage.app",
             messagingSenderId: "779857679768",
@@ -460,7 +446,6 @@
             measurementId: "G-36MT1PG4BC"
         };
 
-        // Inisialisasi Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const dbRef = ref(db, 'odoj_data');
@@ -503,6 +488,7 @@
         let dataStore = {};
         let mutabaahStore = {};
         let activeEditDay = null;
+        let currentMutabaahDate = ''; // Variabel untuk mengingat tanggal mutabaah
         let chartDonut, chartBar;
 
         const getDaysInMonth = (m,y) => new Date(y, m+1, 0).getDate();
@@ -824,25 +810,30 @@
             input.min = minDate;
             input.max = maxDate;
 
-            const today = new Date();
-            if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
-                input.value = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-            } else {
-                input.value = minDate;
+            // Perbaikan Bug: Jangan reset jika currentMutabaahDate masih di bulan yang sama
+            if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
+                const today = new Date();
+                if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
+                    currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+                } else {
+                    currentMutabaahDate = minDate;
+                }
             }
+            
+            input.value = currentMutabaahDate;
             renderMutabaah();
         }
 
         function onMutabaahDateChange() {
+            const input = document.getElementById('mutabaahDateInput');
+            currentMutabaahDate = input.value; // Simpan tanggal yang dipilih
             renderMutabaah();
         }
 
         function renderMutabaah() {
-            const input = document.getElementById('mutabaahDateInput');
-            if (!input.value) return;
+            if (!currentMutabaahDate) return;
             
-            const dateVal = input.value;
-            const day = parseInt(dateVal.split('-')[2]);
+            const day = parseInt(currentMutabaahDate.split('-')[2]);
             const storeKey = `${getKey()}|${selectedNama}|${day}`;
             
             const currentData = mutabaahStore[storeKey] || {};
@@ -869,7 +860,7 @@
             if (!mutabaahStore[storeKey]) { mutabaahStore[storeKey] = {}; }
             mutabaahStore[storeKey][index] = !mutabaahStore[storeKey][index];
             saveData();
-            renderMutabaah();
+            renderMutabaah(); // Ini tidak akan mereset tanggal lagi karena currentMutabaahDate tersimpan
             if (document.getElementById('section-rekap').classList.contains('hidden') === false) {
                 renderRekapDanKPI();
             }
@@ -1122,24 +1113,10 @@
             document.getElementById('sheetOverlay').addEventListener('click', closeSheet);
             switchSection('section-harian', 'harian');
             
-            // Mulai Sinkronisasi Firebase setelah UI siap
             initFirebaseSync();
         }
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-          console.log('ServiceWorker berhasil didaftarkan');
-        })
-        .catch(err => {
-          console.log('ServiceWorker gagal didaftarkan:', err);
-        });
-    });
-  }
-</script>
 </body>
 </html>
