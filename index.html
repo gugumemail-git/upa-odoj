@@ -363,28 +363,17 @@
                             <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
                             <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Jumlah Hari Terisi per Amalan — Periode: <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
                         </div>
-                        <span class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">12 Amalan</span>
+                        <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">14 Amalan</span>
                     </div>
                     <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
-                        <table class="w-full text-xs text-left table-rekap min-w-[1000px] table-sticky-header">
+                        <table class="w-full text-xs text-left table-rekap min-w-[1200px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
                                 <tr>
                                     <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
-                                    <th colspan="12" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
+                                    <th id="header-kriteria-mutabaah" colspan="14" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
                                 </tr>
-                                <tr class="bg-brand-600 text-white font-bold text-[9px] leading-tight">
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">TILAWAH<br>AL-QUR'AN</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">QIYAMULLAIL</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">PUASA<br>SUNNAH</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">DZIKIR<br>PAGI</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">DZIKIR<br>PETANG</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">OLAHRAGA</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">MENDOAKAN<br>QIYADAH PKS<br>& JAMAAH</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">INFAQ</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">BACA<br>TERJEMAH<br>AL-QUR'AN</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">ISTIGHFAR<br>MINIMAL<br>100X</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50 w-[7.5%]">SHALAWAT<br>MINIMAL<br>100X</th>
-                                    <th class="px-2 py-2 w-[7.5%]">SHALAT<br>BERJAMAAH</th>
+                                <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight">
+                                    <!-- Kolom akan di-generate via JS agar dinamis -->
                                 </tr>
                             </thead>
                             <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center">
@@ -485,11 +474,22 @@
         const AUTH_KEY = 'ODOJ_IS_LOGGED_IN';
         const PASSWORD_ADMIN = 'adminodoj'; 
 
+        // UPDATE: Daftar Mutabaah ditambah 2 amalan baru
         const MUTABAAH_LIST = [
-            "Tilawah Al-Qur'an", "Qiyamullail", "Puasa Sunnah", "Dzikir Pagi", 
-            "Dzikir Petang", "Olahraga", "Mendoakan Qiyadah PKS & Jamaah", 
-            "Infaq", "Baca Terjemah Al-Qur'an", "Istighfar Minimal 100x", 
-            "Shalawat Minimal 100x", "Shalat Berjamaah"
+            "Tilawah Al-Qur'an minimal 1 Juz", 
+            "Qiyamullail", 
+            "Puasa Sunnah", 
+            "Dzikir Pagi", 
+            "Dzikir Petang", 
+            "Olahraga", 
+            "Mendoakan Qiyadah PKS & Jamaah", 
+            "Infaq", 
+            "Baca Terjemah Al-Qur'an", 
+            "Istighfar Minimal 100x", 
+            "Shalawat Minimal 100x", 
+            "Shalat Wajib 5 Waktu Berjamaah",
+            "Mendo'akan Palestina",
+            "Shalat Dhuha"
         ];
 
         const ICONS = {
@@ -974,6 +974,24 @@
 
             if (localStorage.getItem(AUTH_KEY) === 'true') {
                 const tbodyRekapMutabaah = document.getElementById('tbody-rekap-mutabaah');
+                const theadKolomMutabaah = document.getElementById('thead-kolom-mutabaah');
+                const headerKriteriaMutabaah = document.getElementById('header-kriteria-mutabaah');
+                const badgeJumlahAmalan = document.getElementById('badge-jumlah-amalan');
+
+                // Update Header Dinamis untuk 14 Amalan
+                headerKriteriaMutabaah.colSpan = MUTABAAH_LIST.length;
+                badgeJumlahAmalan.textContent = `${MUTABAAH_LIST.length} Amalan`;
+
+                // Render kolom header Mutabaah sesuai list terbaru
+                theadKolomMutabaah.innerHTML = MUTABAAH_LIST.map((amalan, idx) => {
+                    // Format teks untuk header
+                    let shortLabel = amalan.replace(' minimal 1 Juz', '<br>1 Juz')
+                                         .replace('Qiyadah PKS & Jamaah', 'QIYADAH<br>PKS & JAMAAH')
+                                         .replace('Minimal 100x', '<br>100X')
+                                         .replace('5 Waktu ', '');
+                    
+                    return `<th class="px-2 py-2 border-r border-brand-500/50 w-[${100/14}%] text-[8px] leading-tight">${shortLabel.toUpperCase()}</th>`;
+                }).join('');
                 
                 tbodyRekapMutabaah.innerHTML = ANGGOTA.map(nama => {
                     const { stats } = computeMutabaahStatsPerAmalan(nama);
