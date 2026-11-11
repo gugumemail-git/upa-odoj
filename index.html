@@ -45,7 +45,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    
+    <script>
+    // Plugin Chart.js untuk menampilkan angka di atas bar
+    const barLabelPlugin = {
+        id: 'barLabelPlugin',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            ctx.save();
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                if (meta.hidden) return;
+                meta.data.forEach((bar, index) => {
+                    const value = dataset.data[index];
+                    if (value > 0) {
+                        ctx.fillStyle = dataset.backgroundColor;
+                        ctx.font = 'bold 11px Plus Jakarta Sans';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillText(value, bar.x, bar.y - 6);
+                    }
+                });
+            });
+            ctx.restore();
+        }
+    };
+    Chart.register(barLabelPlugin);
+</script>
+
     <style>
         html { width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
         body { width: 100%; max-width: 100%; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -460,16 +486,27 @@
                             </div>
                         </div>
                         
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
-                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Semua
-                            </button>
-                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
-                                <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-                            </div>
-                        </div>
+<div class="flex items-center gap-2 flex-wrap">
+    <!-- Tombol Navigasi Bulan -->
+    <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
+        <button onclick="navigateMutabaahPeriod(-1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan sebelumnya">
+            <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <span id="mutabaahPeriodeLabel" class="text-xs font-bold text-slate-700 dark:text-slate-200 px-1 min-w-[100px] text-center"></span>
+        <button onclick="navigateMutabaahPeriod(1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan berikutnya">
+            <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+    </div>
+
+    <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
+        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Semua
+    </button>
+    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+        <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+    </div>
+</div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList"></div>
@@ -1110,25 +1147,59 @@
         }
 
         // ==================== MUTABAAH ====================
-        function initMutabaahDateInput() {
-            const input = document.getElementById('mutabaahDateInput');
-            if (!input) return;
-            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-            const minDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
-            const maxDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
-            input.min = minDate;
-            input.max = maxDate;
-            if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
-                const today = new Date();
-                if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
-                    currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-                } else {
-                    currentMutabaahDate = minDate;
-                }
-            }
-            input.value = currentMutabaahDate;
-            renderMutabaah();
+ function initMutabaahDateInput() {
+    const input = document.getElementById('mutabaahDateInput');
+    const periodeLabel = document.getElementById('mutabaahPeriodeLabel');
+    if (!input) return;
+
+    // Update label bulan di header mutabaah
+    if (periodeLabel) {
+        periodeLabel.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+    }
+
+    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+    const minDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+    const maxDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+    input.min = minDate;
+    input.max = maxDate;
+
+    // Jika currentMutabaahDate tidak sesuai dengan bulan yang dipilih, reset
+    if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
+        const today = new Date();
+        if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
+            currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+        } else {
+            currentMutabaahDate = minDate;
         }
+    }
+    
+    input.value = currentMutabaahDate;
+    renderMutabaah();
+}
+
+// Fungsi baru untuk navigasi bulan di Mutabaah
+function navigateMutabaahPeriod(step) {
+    let idx = selectedBulan + step;
+    let tahun = selectedTahun;
+    if (idx < 0) { idx = 11; tahun--; }
+    if (idx > 11) { idx = 0; tahun++; }
+    if (tahun < 2024) tahun = 2024;
+    if (tahun > 2030) tahun = 2030;
+    
+    selectedBulan = idx;
+    selectedTahun = tahun;
+    
+    // Reset tanggal ke hari pertama bulan baru agar tidak error
+    currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+    
+    // Sinkronkan filter dropdown rekap
+    populateRekapFilters();
+    
+    // Render ulang
+    initMutabaahDateInput();
+    renderAll();
+    haptic([5]); // Getaran halus di HP
+}
 
         function onMutabaahDateChange() {
             currentMutabaahDate = document.getElementById('mutabaahDateInput').value;
@@ -1609,6 +1680,7 @@
         window.exportData = exportData;
         window.exportRekapCSV = exportRekapCSV;
         window.updateApp = updateApp;
+        window.navigateMutabaahPeriod = navigateMutabaahPeriod;
 
         // ==================== INIT ====================
         function init() {

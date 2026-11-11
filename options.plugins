@@ -1,0 +1,13 @@
+chartTrend = new Chart(canvas, {
+    type: 'line',
+    data: { labels: months.map(m => m.label), datasets },
+    options: {
+        // ...
+        plugins: {
+            legend: { display: false },
+            // Tambahkan ini agar angka muncul di titik
+            barLabelPlugin: { enabled: true } 
+        },
+        // ...
+    }
+});
