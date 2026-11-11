@@ -2,11 +2,12 @@
 <html lang="id" class="overflow-x-hidden w-full">
 <head>
     <meta charset="UTF-8">
-    <!-- PERBAIKAN: Gunakan device-width agar lebar mengikuti layar HP -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Aplikasi pelaporan tilawah dan mutabaah yaumiyah UPA 3216M010">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Laporan ODOJ — Grup UPA 3216M010</title>
     
-    <!-- Tautan ke Manifest PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#059669">
     <link rel="apple-touch-icon" href="/icon-192x192.png">
@@ -21,6 +22,20 @@
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         brand: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b',950:'#022c22' }
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'pulse-ring': 'pulseRing 1.5s ease-out infinite',
+                        'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                    },
+                    keyframes: {
+                        slideUp: { from: { transform: 'translateY(20px)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } },
+                        slideDown: { from: { transform: 'translateY(-20px)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } },
+                        fadeIn: { from: { opacity: '0', transform: 'translateY(10px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+                        pulseRing: { '0%': { transform: 'scale(0.9)', opacity: '1' }, '100%': { transform: 'scale(1.5)', opacity: '0' } },
+                        bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: '1' } }
                     }
                 }
             }
@@ -32,17 +47,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     
     <style>
-        /* PERBAIKAN: Pastikan html dan body mencegah overflow horizontal */
-        html {
-            width: 100%;
-            overflow-x: hidden;
-        }
-        body {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        html { width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
+        body { width: 100%; max-width: 100%; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -55,39 +61,23 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .dark .glass-panel {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        .dark .glass-panel { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); }
 
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
         @media (max-width: 1023px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 639px) { .bento-grid { grid-template-columns: 1fr; } }
-        
         .bento-item { border-radius: 1.5rem; padding: 1.5rem; }
         .bento-span-2 { grid-column: span 2; }
+        @media (max-width: 639px) { .bento-span-2 { grid-column: span 1; } }
 
         .hover-lift { transition: transform 0.2s, box-shadow 0.2s; }
         .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
         .dark .hover-lift:hover { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
 
-        .table-rekap {
-            border-radius: 0.75rem !important;
-            overflow: hidden !important;
-            border-collapse: separate !important;
-            border-spacing: 0;
-            border: 1px solid #e2e8f0;
-            width: 100%;
-        }
+        .table-rekap { border-radius: 0.75rem !important; overflow: hidden !important; border-collapse: separate !important; border-spacing: 0; border: 1px solid #e2e8f0; width: 100%; }
         .dark .table-rekap { border-color: #334155; }
-        
         .table-rekap thead tr:first-child th:first-child { border-top-left-radius: 0.75rem !important; }
         .table-rekap thead tr:first-child th:last-child { border-top-right-radius: 0.75rem !important; }
-        
         .table-rekap tbody tr:last-child td:first-child { border-bottom-left-radius: 0.75rem !important; }
         .table-rekap tbody tr:last-child td:last-child { border-bottom-right-radius: 0.75rem !important; }
 
@@ -95,25 +85,26 @@
         .icon-md { width: 20px; height: 20px; }
         .icon-lg { width: 24px; height: 24px; }
 
-        .table-sticky-header thead {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        .table-sticky-header thead { position: sticky; top: 0; z-index: 10; }
 
+        /* Calendar */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
         .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px; }
         .calendar-header-cell { text-align: center; font-size: 11px; font-weight: 700; color: #64748b; padding: 4px 0; }
         .dark .calendar-header-cell { color: #94a3b8; }
-
         .calendar-cell {
             aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
             border-radius: 8px; cursor: pointer; transition: all 0.15s; position: relative; border: 2px solid transparent;
+            user-select: none;
         }
-        .calendar-cell:hover { background-color: rgba(16, 185, 129, 0.1); }
+        .calendar-cell:hover { background-color: rgba(16, 185, 129, 0.1); transform: scale(1.05); }
+        .calendar-cell:active { transform: scale(0.95); }
         .calendar-cell.empty { cursor: default; }
-        .calendar-cell.empty:hover { background: transparent; }
+        .calendar-cell.empty:hover { background: transparent; transform: none; }
         .calendar-cell.today { border-color: #10b981; }
+        .calendar-cell.today::after {
+            content: ''; position: absolute; bottom: 2px; width: 4px; height: 4px; border-radius: 50%; background: #10b981;
+        }
         .calendar-cell .day-num { font-size: 12px; font-weight: 700; color: #334155; line-height: 1; }
         .dark .calendar-cell .day-num { color: #e2e8f0; }
         .calendar-cell.other-month .day-num { color: #cbd5e1; }
@@ -121,32 +112,137 @@
         .calendar-cell .status-icon { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
         .calendar-cell .status-icon svg { width: 12px; height: 12px; stroke-width: 2.5; }
 
+        /* Mutabaah */
         .mutabaah-item {
             display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
             border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; transition: all 0.2s;
+            user-select: none;
         }
-        .mutabaah-item:hover { border-color: #10b981; background: #f0fdf4; }
+        .mutabaah-item:hover { border-color: #10b981; background: #f0fdf4; transform: translateX(2px); }
+        .mutabaah-item:active { transform: scale(0.98); }
         .dark .mutabaah-item { border-color: #334155; background: #0f172a; }
         .dark .mutabaah-item:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
         
         .mutabaah-checkbox {
             width: 24px; height: 24px; border-radius: 6px; border: 2px solid #cbd5e1;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; flex-shrink: 0;
         }
         .dark .mutabaah-checkbox { border-color: #475569; background: #1e293b; }
-        .mutabaah-item.checked .mutabaah-checkbox { background: #10b981; border-color: #10b981; }
+        .mutabaah-item.checked .mutabaah-checkbox { background: #10b981; border-color: #10b981; transform: scale(1.1); }
         .mutabaah-item.checked .mutabaah-checkbox svg { display: block; color: white; }
         .mutabaah-checkbox svg { display: none; width: 16px; height: 16px; }
 
-        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Progress ring */
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform-origin: 50% 50%;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed; top: 1rem; right: 1rem; z-index: 9999;
+            display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto; min-width: 280px; max-width: 400px;
+            padding: 0.875rem 1rem; border-radius: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.3s ease-out;
+            font-size: 0.875rem; font-weight: 600;
+        }
+        .toast.removing { animation: fadeOut 0.2s ease-out forwards; }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+        .toast-success { background: #ecfdf5; color: #065f46; border-left: 4px solid #10b981; }
+        .toast-error { background: #fef2f2; color: #991b1b; border-left: 4px solid #ef4444; }
+        .toast-info { background: #eff6ff; color: #1e40af; border-left: 4px solid #3b82f6; }
+        .toast-warning { background: #fffbeb; color: #92400e; border-left: 4px solid #f59e0b; }
+        .dark .toast-success { background: rgba(6, 95, 70, 0.9); color: #d1fae5; }
+        .dark .toast-error { background: rgba(153, 27, 27, 0.9); color: #fee2e2; }
+        .dark .toast-info { background: rgba(30, 64, 175, 0.9); color: #dbeafe; }
+        .dark .toast-warning { background: rgba(146, 64, 14, 0.9); color: #fef3c7; }
+
+        /* Heatmap */
+        .heatmap-cell {
+            width: 12px; height: 12px; border-radius: 3px; transition: all 0.2s;
+        }
+        .heatmap-cell:hover { transform: scale(1.5); z-index: 10; }
+        .heatmap-0 { background: #f1f5f9; }
+        .heatmap-1 { background: #d1fae5; }
+        .heatmap-2 { background: #6ee7b7; }
+        .heatmap-3 { background: #10b981; }
+        .heatmap-4 { background: #059669; }
+        .dark .heatmap-0 { background: #1e293b; }
+        .dark .heatmap-1 { background: #064e3b; }
+        .dark .heatmap-2 { background: #047857; }
+        .dark .heatmap-3 { background: #10b981; }
+        .dark .heatmap-4 { background: #34d399; }
+
+        /* Confetti */
+        .confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
+
+        /* Search highlight */
+        .search-highlight { background: #fef08a; dark: background: #854d0e; padding: 0 2px; border-radius: 2px; }
+
+        /* Skeleton loading */
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+        .dark .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
         .hidden-menu { display: none !important; }
+
+        /* Swipe hint */
+        .swipe-indicator {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(16, 185, 129, 0.1); border-radius: 50%;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.2s; pointer-events: none;
+        }
+
+        /* Print */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .glass-panel { background: white !important; backdrop-filter: none !important; }
+        }
+
+        /* Badge */
+        .badge-achievement {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            padding: 0.25rem 0.5rem; border-radius: 9999px;
+            font-size: 0.625rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
+        .badge-silver { background: linear-gradient(135deg, #e2e8f0, #cbd5e1); color: #334155; }
+        .badge-bronze { background: linear-gradient(135deg, #fdba74, #fb923c); color: #7c2d12; }
+
+        /* Pull to refresh */
+        .ptr-indicator {
+            position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 40px; border-radius: 50%;
+            background: #10b981; color: white;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; opacity: 0;
+        }
+        .ptr-indicator.active { top: 20px; opacity: 1; }
+        .ptr-indicator.refreshing { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full max-w-full">
 
-    <!-- SIDEBAR (DESKTOP) -->
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- UPDATE BANNER -->
+    <div id="updateBanner" class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] bg-brand-600 text-white px-4 py-2 rounded-xl shadow-lg hidden items-center gap-3 text-sm font-semibold">
+        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <span>Versi baru tersedia!</span>
+        <button onclick="updateApp()" class="bg-white text-brand-600 px-3 py-1 rounded-lg text-xs font-bold hover:bg-brand-50 transition">Update</button>
+    </div>
+
+    <!-- SIDEBAR -->
     <aside class="hidden md:flex w-64 glass-panel flex-col justify-between shrink-0 h-screen z-30 border-r border-slate-200/50 dark:border-slate-800/50">
         <div class="flex-1 min-h-0 flex flex-col">
             <div class="p-6 flex items-center space-x-3">
@@ -171,9 +267,17 @@
                 <button id="menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
                     <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rekap & Grafik
                 </button>
+
+                <button id="menu-stats" onclick="switchSection('section-stats', 'stats')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
+                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> Statistik
+                </button>
             </nav>
         </div>
-        <div class="p-4 border-t border-slate-200/50 dark:border-slate-800/50">
+        <div class="p-4 border-t border-slate-200/50 dark:border-slate-800/50 space-y-2">
+            <button onclick="exportData()" class="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs transition hover:bg-slate-200 dark:hover:bg-slate-700">
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Export Data
+            </button>
             <button onclick="toggleDarkMode()" class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold text-xs transition hover:bg-slate-200 dark:hover:bg-slate-700">
                 <svg class="icon-sm dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                 <svg class="icon-sm hidden dark:inline" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -184,8 +288,7 @@
     </aside>
 
     <!-- MAIN CONTENT -->
-    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden relative w-full max-w-full">
-        <!-- PERBAIKAN: Batasi posisi blob blur agar tidak keluar dari layar HP -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden relative w-full max-w-full" id="mainScroll">
         <div class="absolute top-0 left-0 md:left-1/4 w-72 h-72 md:w-96 md:h-96 bg-brand-200/40 dark:bg-brand-900/20 rounded-full blur-3xl -z-10 pointer-events-none max-w-full"></div>
 
         <header class="sticky top-0 z-20 px-4 md:px-8 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 glass-panel border-b border-white/20 dark:border-slate-800/30 w-full max-w-full">
@@ -204,7 +307,12 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto relative">
-                
+                <!-- Search -->
+                <div class="hidden md:flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+                    <svg class="icon-sm text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none ml-2 w-32" oninput="onSearchChange()">
+                </div>
+
                 <button id="auth-btn" onclick="handleAuthClick()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-xs font-bold transition shadow-sm shrink-0">
                     <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                     <span id="auth-btn-text">Login</span>
@@ -219,14 +327,17 @@
 
         <main class="p-4 md:p-8 space-y-8 flex-1 max-w-7xl mx-auto w-full pb-24 md:pb-8 overflow-x-hidden">
             
-            <!-- SECTION 1: HARIAN (KALENDER) -->
-            <div id="section-harian" class="scroll-mt-24 space-y-8 w-full fade-in">
+            <!-- SECTION 1: HARIAN -->
+            <div id="section-harian" class="scroll-mt-24 space-y-8 w-full animate-fade-in">
                 <div class="bento-grid">
                     <div class="bento-item bento-span-2 bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-xl shadow-brand-500/20 relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
                         <div class="relative z-10 flex flex-col justify-between h-full">
-                            <div class="flex items-center gap-2 text-brand-100 font-semibold text-xs uppercase tracking-wider">
-                                <svg class="icon-sm text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> Streak Kholas
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-brand-100 font-semibold text-xs uppercase tracking-wider">
+                                    <svg class="icon-sm text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> Streak Kholas
+                                </div>
+                                <div id="badgeContainer"></div>
                             </div>
                             <div class="mt-4">
                                 <div class="flex items-baseline gap-2">
@@ -261,16 +372,19 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8 w-full">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8 w-full relative" id="calendarContainer">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                             Laporan Tilawah<br><span id="calendarMonthYear" class="text-lg md:text-xl text-brand-600">Oktober 2026</span>
                         </h3>
                         <div class="flex items-center gap-1 shrink-0">
-                            <button onclick="navigatePeriod(-1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                            <button onclick="navigatePeriod(-1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan sebelumnya (←)">
                                 <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
                             </button>
-                            <button onclick="navigatePeriod(1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition">
+                            <button onclick="goToToday()" class="p-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Hari ini">
+                                <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </button>
+                            <button onclick="navigatePeriod(1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan berikutnya (→)">
                                 <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
                         </div>
@@ -299,41 +413,84 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="section-mutabaah" class="scroll-mt-24 hidden w-full fade-in">
+                <!-- Heatmap Konsistensi -->
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div class="flex items-center justify-between mb-4">
                         <div>
-                            <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mutaba'ah Yaumiyah</h3>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Ceklis amalan harian — <span id="mutabaahNama" class="font-bold text-brand-600"></span></p>
-                        </div>
-                        
-                        <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
-                            <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Heatmap Konsistensi</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Visualisasi intensitas tilawah 6 bulan terakhir</p>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList">
-                        <!-- Item akan di-generate via JS -->
+                    <div class="overflow-x-auto">
+                        <div id="heatmapContainer" class="flex gap-1 min-w-max"></div>
+                        <div class="flex items-center gap-2 mt-3 text-[10px] text-slate-500 dark:text-slate-400">
+                            <span>Kurang</span>
+                            <div class="flex gap-0.5">
+                                <div class="heatmap-cell heatmap-0"></div>
+                                <div class="heatmap-cell heatmap-1"></div>
+                                <div class="heatmap-cell heatmap-2"></div>
+                                <div class="heatmap-cell heatmap-3"></div>
+                                <div class="heatmap-cell heatmap-4"></div>
+                            </div>
+                            <span>Banyak</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full fade-in">
-                
+            <!-- SECTION MUTABAAH -->
+            <div id="section-mutabaah" class="scroll-mt-24 hidden w-full animate-fade-in">
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                        <div class="flex items-center gap-4">
+                            <!-- Progress Ring -->
+                            <div class="relative w-16 h-16 shrink-0">
+                                <svg class="w-16 h-16 transform -rotate-90">
+                                    <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="none" class="text-slate-100 dark:text-slate-800"/>
+                                    <circle id="mutabaahProgressRing" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="6" fill="none" stroke-linecap="round" class="progress-ring-circle" stroke-dasharray="176" stroke-dashoffset="176"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span id="mutabaahProgressText" class="text-xs font-extrabold text-brand-600">0%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mutaba'ah Yaumiyah</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Ceklis amalan harian — <span id="mutabaahNama" class="font-bold text-brand-600"></span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Semua
+                            </button>
+                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+                                <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList"></div>
+                </div>
+            </div>
+
+            <!-- SECTION REKAP -->
+            <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full overflow-hidden">
                     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
                         <div>
                             <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI TILAWAH</h2>
                             <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer">
-                            </select>
-                            <select id="filterRekapTahun" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer">
-                            </select>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
+                            <select id="filterRekapTahun" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
+                            <button onclick="exportRekapCSV()" class="flex items-center gap-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                CSV
+                            </button>
                         </div>
                     </div>
                     <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
@@ -351,8 +508,7 @@
                                     <th class="px-2 py-2">TDK TILAWAH</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-rekap-tilawah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center">
-                            </tbody>
+                            <tbody id="tbody-rekap-tilawah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
                         </table>
                     </div>
                 </div>
@@ -372,12 +528,9 @@
                                     <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
                                     <th id="header-kriteria-mutabaah" colspan="14" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
                                 </tr>
-                                <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight">
-                                    <!-- Kolom akan di-generate via JS agar dinamis -->
-                                </tr>
+                                <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight"></tr>
                             </thead>
-                            <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center">
-                            </tbody>
+                            <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
                         </table>
                     </div>
                 </div>
@@ -396,24 +549,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- SECTION STATISTIK (BARU) -->
+            <div id="section-stats" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
+                <!-- Leaderboard -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <svg class="icon-md text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        Leaderboard Bulan Ini
+                    </h3>
+                    <div id="leaderboard" class="space-y-2"></div>
+                </div>
+
+                <!-- Trend Chart -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4">Trend 6 Bulan Terakhir</h3>
+                    <div class="relative h-72"><canvas id="chartTrend"></canvas></div>
+                </div>
+
+                <!-- Radar Chart -->
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4">Perbandingan Anggota (Radar)</h3>
+                    <div class="relative h-80"><canvas id="chartRadar"></canvas></div>
+                </div>
+            </div>
         </main>
     </div>
 
+    <!-- MOBILE NAV -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 glass-panel border-t border-white/20 dark:border-slate-800/50 z-40 pb-safe">
         <div class="flex justify-around items-center h-16">
             <button id="mobile-menu-harian" onclick="switchSection('section-harian', 'harian')" class="flex flex-col items-center justify-center w-full h-full text-brand-600 dark:text-brand-400 transition-colors duration-200">
                 <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 <span class="text-[10px] font-bold">Harian</span>
             </button>
-            
             <button id="mobile-menu-mutabaah" onclick="switchSection('section-mutabaah', 'mutabaah')" class="hidden-menu flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
                 <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <span class="text-[10px] font-bold">Mutabaah</span>
             </button>
-
             <button id="mobile-menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
                 <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 <span class="text-[10px] font-bold">Rekap</span>
+            </button>
+            <button id="mobile-menu-stats" onclick="switchSection('section-stats', 'stats')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
+                <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                <span class="text-[10px] font-bold">Stats</span>
             </button>
             <button onclick="toggleDarkMode()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500">
                 <svg class="icon-md dark:hidden mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -424,6 +604,7 @@
         </div>
     </div>
 
+    <!-- BOTTOM SHEET -->
     <div id="sheetOverlay" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
     <div id="bottomSheet" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl z-[60] p-6 transition-transform duration-300 translate-y-full max-h-[85vh] overflow-y-auto border-t border-slate-200 dark:border-slate-800">
         <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-5"></div>
@@ -436,8 +617,9 @@
         <div id="sheetOptions" class="grid grid-cols-1 gap-2 pb-6"></div>
     </div>
 
+    <!-- LOGIN MODAL -->
     <div id="loginModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800 animate-bounce-in">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Login Editor</h3>
                 <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center">
@@ -445,7 +627,7 @@
                 </button>
             </div>
             <p class="text-xs text-slate-500 mb-4">Masuk untuk mengakses menu Mutaba'ah dan Rekapnya.</p>
-            <input type="password" id="loginPassword" placeholder="Masukkan Password" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 mb-4 text-sm">
+            <input type="password" id="loginPassword" placeholder="Masukkan Password" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 mb-4 text-sm" onkeydown="if(event.key==='Enter') handleLogin()">
             <button onclick="handleLogin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition shadow-sm">Masuk</button>
         </div>
     </div>
@@ -474,7 +656,6 @@
         const AUTH_KEY = 'ODOJ_IS_LOGGED_IN';
         const PASSWORD_ADMIN = 'adminodoj'; 
 
-        // UPDATE: Daftar Mutabaah ditambah 2 amalan baru
         const MUTABAAH_LIST = [
             "Tilawah Al-Qur'an minimal 1 Juz", 
             "Qiyamullail", 
@@ -516,12 +697,59 @@
         let mutabaahStore = {};
         let activeEditDay = null;
         let currentMutabaahDate = '';
-        let chartDonut, chartBar;
+        let chartDonut, chartBar, chartTrend, chartRadar;
+        let searchQuery = '';
 
         const getDaysInMonth = (m,y) => new Date(y, m+1, 0).getDate();
         const getKey = () => `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`;
         const getMonthKey = (nama) => `${getKey()}|${nama}`;
 
+        // ==================== TOAST ====================
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const icons = {
+                success: '<svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>',
+                error: '<svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>',
+                warning: '<svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>',
+                info: '<svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+            };
+            toast.innerHTML = `${icons[type] || icons.info}<span class="flex-1">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => toast.remove(), 200);
+            }, duration);
+        }
+
+        // ==================== HAPTIC ====================
+        function haptic(pattern = [10]) {
+            if (navigator.vibrate) navigator.vibrate(pattern);
+        }
+
+        // ==================== CONFETTI ====================
+        function fireConfetti() {
+            const colors = ['#10b981','#f59e0b','#3b82f6','#ec4899','#8b5cf6'];
+            for (let i = 0; i < 50; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = '-10px';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                c.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(c);
+                const duration = 2000 + Math.random() * 2000;
+                c.animate([
+                    { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${720}deg)`, opacity: 0 }
+                ], { duration, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' });
+                setTimeout(() => c.remove(), duration);
+            }
+        }
+
+        // ==================== FIREBASE ====================
         function initFirebaseSync() {
             onValue(dbRef, (snapshot) => {
                 const cloudData = snapshot.val();
@@ -538,7 +766,7 @@
                 }
             }, (error) => {
                 console.error("Gagal membaca database:", error);
-                alert("Gagal terhubung ke database. Periksa aturan (Rules) Firebase Anda.");
+                showToast("Gagal terhubung ke database. Periksa Rules Firebase.", 'error', 5000);
             });
         }
 
@@ -550,6 +778,7 @@
             };
             set(dbRef, payload).catch((error) => {
                 console.error("Gagal menyimpan data:", error);
+                showToast("Gagal menyimpan ke cloud", 'error');
             });
         }
 
@@ -570,6 +799,7 @@
             if(dataStore[key]) { delete dataStore[key][day]; saveData(); }
         }
 
+        // ==================== AUTH ====================
         function checkAuth() {
             const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
             const btnText = document.getElementById('auth-btn-text');
@@ -583,31 +813,22 @@
                 btnText.textContent = 'Logout';
                 btn.classList.replace('bg-slate-800', 'bg-rose-600');
                 btn.classList.replace('hover:bg-slate-900', 'hover:bg-rose-700');
-                
                 menuDesktopMutabaah.classList.remove('hidden-menu');
                 menuDesktopMutabaah.classList.add('flex');
-                
                 menuMobileMutabaah.classList.remove('hidden-menu');
                 menuMobileMutabaah.classList.add('flex');
-                
                 cardRekapMutabaah.classList.remove('hidden-menu');
             } else {
                 btnText.textContent = 'Login';
                 btn.classList.replace('bg-rose-600', 'bg-slate-800');
                 btn.classList.replace('hover:bg-rose-700', 'hover:bg-slate-900');
-                
                 menuDesktopMutabaah.classList.add('hidden-menu');
                 menuDesktopMutabaah.classList.remove('flex');
-                
                 menuMobileMutabaah.classList.add('hidden-menu');
                 menuMobileMutabaah.classList.remove('flex');
-                
                 cardRekapMutabaah.classList.add('hidden-menu');
-                
                 const isMutabaahActive = !document.getElementById('section-mutabaah').classList.contains('hidden');
-                if (isMutabaahActive) {
-                    switchSection('section-harian', 'harian');
-                }
+                if (isMutabaahActive) switchSection('section-harian', 'harian');
             }
         }
 
@@ -616,7 +837,7 @@
                 localStorage.removeItem(AUTH_KEY);
                 checkAuth();
                 renderRekapDanKPI();
-                alert('Berhasil logout.');
+                showToast('Berhasil logout', 'info');
             } else {
                 document.getElementById('loginModal').classList.remove('hidden');
                 document.getElementById('loginPassword').value = '';
@@ -635,27 +856,34 @@
                 checkAuth();
                 closeLoginModal();
                 renderRekapDanKPI();
-                alert('Login berhasil! Menu Mutabaah telah dibuka.');
+                showToast('Login berhasil! Menu Mutabaah dibuka', 'success');
             } else {
-                alert('Password salah!');
+                showToast('Password salah!', 'error');
+                haptic([50, 30, 50]);
             }
         }
 
+        // ==================== FILTERS ====================
         function populateFilters() {
             const fn = document.getElementById('filterNama');
             if (!ANGGOTA.includes(selectedNama)) selectedNama = ANGGOTA[0];
             
-            let optionsHtml = ANGGOTA.map(n=>`<option value="${n}" ${n===selectedNama?'selected':''}>${n}</option>`).join('');
+            const filtered = ANGGOTA.filter(n => n.toLowerCase().includes(searchQuery.toLowerCase()));
+            let optionsHtml = filtered.map(n=>`<option value="${n}" ${n===selectedNama?'selected':''}>${n}</option>`).join('');
+            if (filtered.length === 0) optionsHtml = `<option value="">Tidak ditemukan</option>`;
             optionsHtml += `<option value="ADD_NEW" class="font-bold text-brand-600">+ Tambah Anggota</option>`;
             fn.innerHTML = optionsHtml;
+        }
+
+        function onSearchChange() {
+            searchQuery = document.getElementById('searchInput').value;
+            populateFilters();
         }
 
         function populateRekapFilters() {
             const fb = document.getElementById('filterRekapBulan');
             const ft = document.getElementById('filterRekapTahun');
-            
             fb.innerHTML = BULAN_LIST.map((b,i)=>`<option value="${i}" ${i===selectedBulan?'selected':''}>${b}</option>`).join('');
-            
             let years = '';
             for(let y=2024; y<=2030; y++) years += `<option value="${y}" ${y===selectedTahun?'selected':''}>${y}</option>`;
             ft.innerHTML = years;
@@ -664,10 +892,6 @@
         function onFilterRekapChange() {
             selectedBulan = parseInt(document.getElementById('filterRekapBulan').value);
             selectedTahun = parseInt(document.getElementById('filterRekapTahun').value);
-            
-            const mainBulan = document.getElementById('filterBulan');
-            if(mainBulan) mainBulan.value = selectedBulan;
-            
             renderAll();
         }
 
@@ -684,7 +908,8 @@
                         populateFilters();
                         renderAll();
                         initMutabaahDateInput();
-                    } else { alert("Nama sudah ada dalam daftar."); }
+                        showToast(`${cleanName} ditambahkan`, 'success');
+                    } else { showToast("Nama sudah ada", 'warning'); }
                 }
                 document.getElementById('filterNama').value = selectedNama;
             } else {
@@ -694,24 +919,25 @@
             }
         }
 
+        // ==================== NAVIGATION ====================
         function switchSection(sectionId, menuId) {
             if ((sectionId === 'section-mutabaah') && localStorage.getItem(AUTH_KEY) !== 'true') {
                 handleAuthClick();
                 return;
             }
 
-            ['section-harian', 'section-mutabaah', 'section-rekap'].forEach(id => {
+            ['section-harian', 'section-mutabaah', 'section-rekap', 'section-stats'].forEach(id => {
                 const el = document.getElementById(id);
-                el.classList.add('hidden');
-                el.classList.remove('fade-in');
+                if (el) { el.classList.add('hidden'); el.classList.remove('fade-in'); }
             });
             
             const activeEl = document.getElementById(sectionId);
+            if (!activeEl) return;
             activeEl.classList.remove('hidden');
             void activeEl.offsetWidth; 
             activeEl.classList.add('fade-in');
             
-            const menus = ['harian', 'mutabaah', 'rekap'];
+            const menus = ['harian', 'mutabaah', 'rekap', 'stats'];
             const activeClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 bg-white dark:bg-slate-800 text-brand-700 dark:text-brand-300 shadow-sm border border-slate-200 dark:border-slate-700 font-bold text-sm';
             const inactiveClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm';
             const mobileActive = 'flex flex-col items-center justify-center w-full h-full text-brand-600 dark:text-brand-400 transition-colors duration-200';
@@ -720,41 +946,32 @@
             menus.forEach(m => {
                 const elDesktop = document.getElementById(`menu-${m}`);
                 const elMobile = document.getElementById(`mobile-menu-${m}`);
-                
-                if (!elDesktop.classList.contains('hidden-menu')) {
-                    if (m === menuId) {
-                        elDesktop.className = activeClass;
-                        elDesktop.querySelector('svg').classList.add('text-brand-500');
-                    } else {
-                        elDesktop.className = inactiveClass;
-                        elDesktop.querySelector('svg').classList.remove('text-brand-500');
-                    }
+                if (elDesktop && !elDesktop.classList.contains('hidden-menu')) {
+                    elDesktop.className = m === menuId ? activeClass : inactiveClass;
+                    const svg = elDesktop.querySelector('svg');
+                    if (svg) svg.classList.toggle('text-brand-500', m === menuId);
                 }
-                
-                if (!elMobile.classList.contains('hidden-menu')) {
-                    if (m === menuId) {
-                        elMobile.className = mobileActive;
-                    } else {
-                        elMobile.className = mobileInactive;
-                    }
+                if (elMobile && !elMobile.classList.contains('hidden-menu')) {
+                    elMobile.className = m === menuId ? mobileActive : mobileInactive;
                 }
             });
 
-            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': 'Mutaba\'ah Yaumiyah', 'rekap': 'Rekap & Grafik' };
-            document.getElementById('page-title').textContent = titles[menuId];
+            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': "Mutaba'ah Yaumiyah", 'rekap': 'Rekap & Grafik', 'stats': 'Statistik & Leaderboard' };
+            document.getElementById('page-title').textContent = titles[menuId] || '';
             
             if (menuId === 'mutabaah') initMutabaahDateInput();
-            if (menuId === 'rekap') {
-                populateRekapFilters();
-                renderRekapDanKPI();
-            }
+            if (menuId === 'rekap') { populateRekapFilters(); renderRekapDanKPI(); }
+            if (menuId === 'stats') renderStats();
         }
 
+        // ==================== DARK MODE ====================
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             if (chartDonut) chartDonut.update();
             if (chartBar) chartBar.update();
+            if (chartTrend) chartTrend.update();
+            if (chartRadar) chartRadar.update();
         }
         
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -763,6 +980,7 @@
             document.documentElement.classList.remove('dark');
         }
 
+        // ==================== PERIOD NAV ====================
         function navigatePeriod(step) {
             let idx = selectedBulan + step;
             let tahun = selectedTahun;
@@ -770,15 +988,25 @@
             if(idx > 11){ idx = 0; tahun++; }
             if(tahun < 2024) tahun = 2024;
             if(tahun > 2030) tahun = 2030;
-            
             selectedBulan = idx; 
             selectedTahun = tahun;
-            
             populateRekapFilters();
             renderAll();
             initMutabaahDateInput();
+            haptic([5]);
         }
 
+        function goToToday() {
+            const now = new Date();
+            selectedBulan = now.getMonth();
+            selectedTahun = now.getFullYear();
+            populateRekapFilters();
+            renderAll();
+            initMutabaahDateInput();
+            showToast('Kembali ke hari ini', 'info');
+        }
+
+        // ==================== RENDER ====================
         function renderAll() {
             const periodeStr = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
             document.getElementById('rekapPeriode').textContent = periodeStr;
@@ -787,9 +1015,9 @@
             document.getElementById('streakName').textContent = selectedNama;
             document.getElementById('calendarMonthYear').textContent = periodeStr; 
             document.getElementById('mutabaahNama').textContent = selectedNama;
-            
             renderCalendar();
             renderRekapDanKPI();
+            renderHeatmap();
         }
 
         function computeStreak(nama) {
@@ -802,6 +1030,13 @@
             return streak;
         }
 
+        function getBadge(streak) {
+            if (streak >= 30) return '<span class="badge-achievement badge-gold">🏆 30+ Hari</span>';
+            if (streak >= 14) return '<span class="badge-achievement badge-silver">🥈 14+ Hari</span>';
+            if (streak >= 7) return '<span class="badge-achievement badge-bronze">🥉 7+ Hari</span>';
+            return '';
+        }
+
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             const total = getDaysInMonth(selectedBulan, selectedTahun);
@@ -809,7 +1044,6 @@
             const prevMonth = selectedBulan === 0 ? 11 : selectedBulan - 1;
             const prevYear = selectedBulan === 0 ? selectedTahun - 1 : selectedTahun;
             const prevMonthTotal = getDaysInMonth(prevMonth, prevYear);
-            
             const totalCells = 42;
             let html = '';
             
@@ -825,10 +1059,8 @@
                 const rec = getRecord(selectedNama, day);
                 const statusObj = rec ? STATUS.find(s => s.id === rec.status) : null;
                 const todayClass = (isCurrentMonth && today.getDate() === day) ? 'today' : '';
-                
                 let iconHtml = '';
                 if (statusObj) { iconHtml = `<span class="status-icon" style="color:${statusObj.color}">${statusObj.icon}</span>`; }
-                
                 html += `
                     <div class="calendar-cell ${todayClass}" onclick="openSheet(${day})">
                         <span class="day-num">${day}</span>
@@ -841,19 +1073,51 @@
             for (let i = 1; i <= remainingCells; i++) {
                 html += `<div class="calendar-cell other-month"><span class="day-num">${i}</span></div>`;
             }
-            
             grid.innerHTML = html;
         }
 
+        // ==================== HEATMAP ====================
+        function renderHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            if (!container) return;
+            const months = [];
+            for (let i = 5; i >= 0; i--) {
+                let m = selectedBulan - i;
+                let y = selectedTahun;
+                while (m < 0) { m += 12; y--; }
+                months.push({ m, y });
+            }
+            let html = '';
+            months.forEach(({m, y}) => {
+                const total = getDaysInMonth(m, y);
+                const key = `${y}-${String(m+1).padStart(2,'0')}`;
+                let monthHtml = `<div class="flex flex-col gap-1"><div class="text-[9px] font-bold text-slate-500 dark:text-slate-400 text-center mb-1">${BULAN_LIST[m].slice(0,3)}</div><div class="grid grid-cols-7 gap-0.5">`;
+                for (let d = 1; d <= total; d++) {
+                    const rec = dataStore[`${key}|${selectedNama}`] && dataStore[`${key}|${selectedNama}`][d];
+                    let level = 0;
+                    if (rec) {
+                        if (rec.status === 'kholas') level = 4;
+                        else if (rec.status === 'progress') level = 3;
+                        else if (rec.status === 'kurang') level = 2;
+                        else level = 1;
+                    }
+                    monthHtml += `<div class="heatmap-cell heatmap-${level}" title="${d} ${BULAN_LIST[m]} ${y}"></div>`;
+                }
+                monthHtml += `</div></div>`;
+                html += monthHtml;
+            });
+            container.innerHTML = html;
+        }
+
+        // ==================== MUTABAAH ====================
         function initMutabaahDateInput() {
             const input = document.getElementById('mutabaahDateInput');
+            if (!input) return;
             const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-            
             const minDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
             const maxDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
             input.min = minDate;
             input.max = maxDate;
-
             if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
                 const today = new Date();
                 if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
@@ -862,31 +1126,37 @@
                     currentMutabaahDate = minDate;
                 }
             }
-            
             input.value = currentMutabaahDate;
             renderMutabaah();
         }
 
         function onMutabaahDateChange() {
-            const input = document.getElementById('mutabaahDateInput');
-            currentMutabaahDate = input.value;
+            currentMutabaahDate = document.getElementById('mutabaahDateInput').value;
             renderMutabaah();
         }
 
         function renderMutabaah() {
             if (!currentMutabaahDate) return;
-            
             const day = parseInt(currentMutabaahDate.split('-')[2]);
             const storeKey = `${getKey()}|${selectedNama}|${day}`;
-            
             const currentData = mutabaahStore[storeKey] || {};
             const listContainer = document.getElementById('mutabaahList');
+            
+            // Update progress ring
+            const checkedCount = Object.values(currentData).filter(Boolean).length;
+            const percent = Math.round((checkedCount / MUTABAAH_LIST.length) * 100);
+            const ring = document.getElementById('mutabaahProgressRing');
+            const text = document.getElementById('mutabaahProgressText');
+            if (ring && text) {
+                const circumference = 2 * Math.PI * 28;
+                ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+                text.textContent = percent + '%';
+            }
+            
             let html = '';
-
             MUTABAAH_LIST.forEach((item, index) => {
                 const isChecked = currentData[index] === true;
                 const checkedClass = isChecked ? 'checked' : '';
-                
                 html += `
                     <div class="mutabaah-item ${checkedClass}" onclick="toggleMutabaah('${storeKey}', ${index})">
                         <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 pr-2">${item}</span>
@@ -900,15 +1170,30 @@
         }
 
         function toggleMutabaah(storeKey, index) {
+            haptic([5]);
             if (!mutabaahStore[storeKey]) { mutabaahStore[storeKey] = {}; }
             mutabaahStore[storeKey][index] = !mutabaahStore[storeKey][index];
             saveData();
             renderMutabaah();
-            if (document.getElementById('section-rekap').classList.contains('hidden') === false) {
-                renderRekapDanKPI();
+        }
+
+        function completeAllMutabaah() {
+            if (!currentMutabaahDate) return;
+            const day = parseInt(currentMutabaahDate.split('-')[2]);
+            const storeKey = `${getKey()}|${selectedNama}|${day}`;
+            if (!mutabaahStore[storeKey]) mutabaahStore[storeKey] = {};
+            const allChecked = MUTABAAH_LIST.every((_, i) => mutabaahStore[storeKey][i] === true);
+            MUTABAAH_LIST.forEach((_, i) => { mutabaahStore[storeKey][i] = !allChecked; });
+            saveData();
+            renderMutabaah();
+            haptic([10, 30, 10]);
+            if (!allChecked) {
+                showToast('Semua amalan dicentang! 🎉', 'success');
+                fireConfetti();
             }
         }
 
+        // ==================== STATS ====================
         function computeStats(nama) {
             const total = getDaysInMonth(selectedBulan, selectedTahun);
             const stats = { kholas:0, progress:0, 'tidak-laporan':0, kurang:0, 'tidak-tilawah':0 };
@@ -922,43 +1207,21 @@
             return stats;
         }
 
-        function computeMutabaahStatsPerAmalan(nama) {
-            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-            const stats = new Array(MUTABAAH_LIST.length).fill(0);
-            let totalCentang = 0;
-
-            for (let day = 1; day <= totalHari; day++) {
-                const storeKey = `${getKey()}|${nama}|${day}`;
-                const dayData = mutabaahStore[storeKey];
-                if (dayData) {
-                    MUTABAAH_LIST.forEach((_, index) => {
-                        if (dayData[index] === true) { 
-                            stats[index]++; 
-                            totalCentang++;
-                        }
-                    });
-                }
-            }
-            return { stats, totalCentang };
-        }
-
         function renderRekapDanKPI() {
             const meStats = computeStats(selectedNama);
-            
-            document.getElementById('streakCount').textContent = computeStreak(selectedNama);
+            const streak = computeStreak(selectedNama);
+            document.getElementById('streakCount').textContent = streak;
+            document.getElementById('badgeContainer').innerHTML = getBadge(streak);
             document.getElementById('kpiPersenKholas').textContent = meStats.persenKholas + '%';
             document.getElementById('kpiBarKholas').style.width = meStats.persenKholas + '%';
             document.getElementById('kpiHariTerisi').textContent = meStats.terisi;
             document.getElementById('kpiTotalHari').textContent = meStats.totalHari;
 
             const tbodyRekapTilawah = document.getElementById('tbody-rekap-tilawah');
-            
             tbodyRekapTilawah.innerHTML = ANGGOTA.map(nama => {
                 const s = computeStats(nama);
                 const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10 font-bold' : '';
-                
                 const fmtVal = (v) => v === 0 ? '-' : v;
-
                 return `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
                         <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
@@ -977,32 +1240,20 @@
                 const theadKolomMutabaah = document.getElementById('thead-kolom-mutabaah');
                 const headerKriteriaMutabaah = document.getElementById('header-kriteria-mutabaah');
                 const badgeJumlahAmalan = document.getElementById('badge-jumlah-amalan');
-
-                // Update Header Dinamis untuk 14 Amalan
                 headerKriteriaMutabaah.colSpan = MUTABAAH_LIST.length;
                 badgeJumlahAmalan.textContent = `${MUTABAAH_LIST.length} Amalan`;
-
-                // Render kolom header Mutabaah sesuai list terbaru
                 theadKolomMutabaah.innerHTML = MUTABAAH_LIST.map((amalan, idx) => {
-                    // Format teks untuk header
-                    let shortLabel = amalan.replace(' minimal 1 Juz', '<br>1 Juz')
-                                         .replace('Qiyadah PKS & Jamaah', 'QIYADAH<br>PKS & JAMAAH')
-                                         .replace('Minimal 100x', '<br>100X')
-                                         .replace('5 Waktu ', '');
-                    
+                    let shortLabel = amalan.replace(' minimal 1 Juz', '<br>1 Juz').replace('Qiyadah PKS & Jamaah', 'QIYADAH<br>PKS & JAMAAH').replace('Minimal 100x', '<br>100X').replace('5 Waktu ', '');
                     return `<th class="px-2 py-2 border-r border-brand-500/50 w-[${100/14}%] text-[8px] leading-tight">${shortLabel.toUpperCase()}</th>`;
                 }).join('');
-                
                 tbodyRekapMutabaah.innerHTML = ANGGOTA.map(nama => {
                     const { stats } = computeMutabaahStatsPerAmalan(nama);
                     const isActive = nama === selectedNama ? 'bg-brand-50/50 dark:bg-brand-900/10 font-bold' : '';
-
                     const cells = stats.map(val => {
                         const displayVal = val > 0 ? val : '-';
                         const colorClass = val > 0 ? 'text-brand-800 dark:text-brand-200 font-bold' : 'text-slate-300 dark:text-slate-600';
                         return `<td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle ${colorClass}">${displayVal}</td>`;
                     }).join('');
-
                     return `
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
                             <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
@@ -1020,13 +1271,27 @@
                     <span>${s.label}</span>
                 </div>
             `).join('');
-
             renderCharts(meStats);
         }
 
+        function computeMutabaahStatsPerAmalan(nama) {
+            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+            const stats = new Array(MUTABAAH_LIST.length).fill(0);
+            for (let day = 1; day <= totalHari; day++) {
+                const storeKey = `${getKey()}|${nama}|${day}`;
+                const dayData = mutabaahStore[storeKey];
+                if (dayData) {
+                    MUTABAAH_LIST.forEach((_, index) => {
+                        if (dayData[index] === true) stats[index]++;
+                    });
+                }
+            }
+            return { stats };
+        }
+
+        // ==================== CHARTS ====================
         function renderCharts(meStats) {
             if(typeof Chart === 'undefined') return;
-
             const isDark = document.documentElement.classList.contains('dark');
             const textColor = isDark ? '#94a3b8' : '#64748b';
             const gridColor = isDark ? 'rgba(148, 163, 184, 0.1)' : 'rgba(100, 116, 139, 0.1)';
@@ -1041,9 +1306,7 @@
                     datasets: [{
                         data: STATUS.map(s => meStats[s.id] || 0),
                         backgroundColor: STATUS.map(s => s.color),
-                        borderWidth: 4, 
-                        borderColor: isDark ? '#0f172a' : '#ffffff',
-                        hoverOffset: 4
+                        borderWidth: 4, borderColor: isDark ? '#0f172a' : '#ffffff', hoverOffset: 4
                     }]
                 },
                 options: {
@@ -1052,36 +1315,143 @@
                 }
             });
 
-            const datasetsBar = STATUS.map(status => {
-                return {
-                    label: status.label,
-                    data: ANGGOTA.map(n => computeStats(n)[status.id] || 0),
-                    backgroundColor: status.color,
-                    borderRadius: 6,
-                    barPercentage: 0.6,
-                    categoryPercentage: 0.8
-                };
-            });
+            const datasetsBar = STATUS.map(status => ({
+                label: status.label,
+                data: ANGGOTA.map(n => computeStats(n)[status.id] || 0),
+                backgroundColor: status.color, borderRadius: 6, barPercentage: 0.6, categoryPercentage: 0.8
+            }));
 
             chartBar = new Chart(document.getElementById('chartBar'), {
                 type: 'bar',
                 data: { labels: ANGGOTA, datasets: datasetsBar },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, pointStyle: 'rect', color: textColor, font: { size: 10, family: 'Plus Jakarta Sans' }, padding: 20 }
-                        }
-                    },
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, pointStyle: 'rect', color: textColor, font: { size: 10 } } } },
                     scales: {
-                        x: { stacked: false, ticks: { color: textColor, font: { size: 10, family: 'Plus Jakarta Sans' } }, grid: { display: false } },
-                        y: { beginAtZero: true, ticks: { precision: 0, color: textColor, font: { size: 10, family: 'Plus Jakarta Sans' } }, grid: { color: gridColor } }
+                        x: { stacked: false, ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } },
+                        y: { beginAtZero: true, ticks: { precision: 0, color: textColor, font: { size: 10 } }, grid: { color: gridColor } }
                     }
                 }
             });
         }
 
+        // ==================== STATS SECTION ====================
+        function renderStats() {
+            renderLeaderboard();
+            renderTrendChart();
+            renderRadarChart();
+        }
+
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboard');
+            if (!container) return;
+            const scores = ANGGOTA.map(n => {
+                const s = computeStats(n);
+                const total = s.kholas * 5 + s.progress * 3 + s.kurang * 1;
+                return { nama: n, score: total, kholas: s.kholas, persen: s.persenKholas };
+            }).sort((a,b) => b.score - a.score);
+
+            const medals = ['🥇','🥈','🥉'];
+            container.innerHTML = scores.map((s, i) => `
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <div class="w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm ${i < 3 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">${i < 3 ? medals[i] : i+1}</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-sm text-slate-800 dark:text-slate-200 truncate">${s.nama}</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">${s.kholas} hari kholas • ${s.persen}%</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-extrabold text-brand-600">${s.score}</p>
+                        <p class="text-[9px] text-slate-400">poin</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTrendChart() {
+            if (typeof Chart === 'undefined') return;
+            const canvas = document.getElementById('chartTrend');
+            if (!canvas) return;
+            if (chartTrend) chartTrend.destroy();
+
+            const months = [];
+            for (let i = 5; i >= 0; i--) {
+                let m = selectedBulan - i;
+                let y = selectedTahun;
+                while (m < 0) { m += 12; y--; }
+                months.push({ m, y, label: `${BULAN_LIST[m].slice(0,3)} ${y}` });
+            }
+
+            const datasets = [{
+                label: 'Kholas',
+                data: months.map(({m, y}) => {
+                    let count = 0;
+                    const total = getDaysInMonth(m, y);
+                    const key = `${y}-${String(m+1).padStart(2,'0')}|${selectedNama}`;
+                    if (dataStore[key]) {
+                        for (let d = 1; d <= total; d++) {
+                            if (dataStore[key][d] && dataStore[key][d].status === 'kholas') count++;
+                        }
+                    }
+                    return count;
+                }),
+                borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4
+            }];
+
+            const isDark = document.documentElement.classList.contains('dark');
+            chartTrend = new Chart(canvas, {
+                type: 'line',
+                data: { labels: months.map(m => m.label), datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { display: false } },
+                        y: { beginAtZero: true, ticks: { precision: 0, color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { color: isDark ? 'rgba(148,163,184,0.1)' : 'rgba(100,116,139,0.1)' } }
+                    }
+                }
+            });
+        }
+
+        function renderRadarChart() {
+            if (typeof Chart === 'undefined') return;
+            const canvas = document.getElementById('chartRadar');
+            if (!canvas) return;
+            if (chartRadar) chartRadar.destroy();
+
+            const labels = ['Kholas', 'Progress', 'Kurang', 'Tdk Lapor', 'Tdk Tilawah'];
+            const colors = ['#10b981','#f59e0b','#64748b','#ec4899','#ef4444'];
+            const datasets = ANGGOTA.slice(0, 5).map((nama, i) => {
+                const s = computeStats(nama);
+                return {
+                    label: nama,
+                    data: [s.kholas, s.progress, s.kurang, s['tidak-laporan'], s['tidak-tilawah']],
+                    borderColor: colors[i % colors.length],
+                    backgroundColor: colors[i % colors.length] + '20',
+                    pointBackgroundColor: colors[i % colors.length],
+                    borderWidth: 2
+                };
+            });
+
+            const isDark = document.documentElement.classList.contains('dark');
+            chartRadar = new Chart(canvas, {
+                type: 'radar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } } } },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, color: isDark ? '#94a3b8' : '#64748b', font: { size: 9 }, backdropColor: 'transparent' },
+                            grid: { color: isDark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.15)' },
+                            pointLabels: { color: isDark ? '#cbd5e1' : '#475569', font: { size: 10, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==================== SHEET ====================
         function buildSheetOptions() {
             const wrap = document.getElementById('sheetOptions');
             wrap.innerHTML = STATUS.map(s => `
@@ -1101,10 +1471,10 @@
             const dateObj = new Date(selectedTahun, selectedBulan, day);
             const daysIndo = ["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
             document.getElementById('sheetTitle').textContent = `${daysIndo[dateObj.getDay()]}, ${day} ${BULAN_LIST[selectedBulan]} — ${selectedNama}`;
-            
             document.getElementById('sheetOverlay').classList.remove('hidden');
             document.getElementById('bottomSheet').classList.remove('translate-y-full');
             document.body.style.overflow = 'hidden';
+            haptic([5]);
         }
 
         function closeSheet() {
@@ -1119,6 +1489,8 @@
             setRecord(selectedNama, activeEditDay, statusId);
             closeSheet();
             renderAll();
+            haptic([10, 20, 10]);
+            showToast('Status tersimpan', 'success', 1500);
         }
 
         function pickDelete() {
@@ -1126,13 +1498,104 @@
             removeRecord(selectedNama, activeEditDay);
             closeSheet();
             renderAll();
+            showToast('Status dihapus', 'info', 1500);
         }
 
+        // ==================== EXPORT ====================
+        function exportData() {
+            const data = { anggota: ANGGOTA, tilawah: dataStore, mutabaah: mutabaahStore, exportedAt: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `odoj-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Data berhasil di-export', 'success');
+        }
+
+        function exportRekapCSV() {
+            let csv = `Nama,Kholas,Progress,Tdk Lapor,Kurang,Tdk Tilawah,Total Hari,Persen Kholas\n`;
+            ANGGOTA.forEach(nama => {
+                const s = computeStats(nama);
+                csv += `${nama},${s.kholas},${s.progress},${s['tidak-laporan']},${s.kurang},${s['tidak-tilawah']},${s.totalHari},${s.persenKholas}%\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rekap-${BULAN_LIST[selectedBulan]}-${selectedTahun}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Rekap CSV berhasil di-download', 'success');
+        }
+
+        // ==================== PWA ====================
+        let swRegistration = null;
+        let refreshing = false;
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    swRegistration = reg;
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                document.getElementById('updateBanner').classList.remove('hidden');
+                                document.getElementById('updateBanner').classList.add('flex');
+                            }
+                        });
+                    });
+                }).catch(err => console.log('SW registration failed', err));
+            });
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (refreshing) return;
+                refreshing = true;
+                window.location.reload();
+            });
+        }
+
+        function updateApp() {
+            if (swRegistration && swRegistration.waiting) {
+                swRegistration.waiting.postMessage('SKIP_WAITING');
+            }
+        }
+
+        // ==================== KEYBOARD ====================
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            if (e.key === 'Escape') { closeSheet(); closeLoginModal(); }
+            if (e.key === 'ArrowLeft' && !document.getElementById('section-harian').classList.contains('hidden')) navigatePeriod(-1);
+            if (e.key === 'ArrowRight' && !document.getElementById('section-harian').classList.contains('hidden')) navigatePeriod(1);
+        });
+
+        // ==================== SWIPE ====================
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const calContainer = document.getElementById('calendarContainer');
+        if (calContainer) {
+            calContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+            calContainer.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].screenX - touchStartX;
+                const dy = e.changedTouches[0].screenY - touchStartY;
+                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+                    navigatePeriod(dx > 0 ? -1 : 1);
+                }
+            }, { passive: true });
+        }
+
+        // ==================== EXPOSE ====================
         window.handleAuthClick = handleAuthClick;
         window.closeLoginModal = closeLoginModal;
         window.handleLogin = handleLogin;
         window.onFilterChange = onFilterChange;
+        window.onSearchChange = onSearchChange;
         window.navigatePeriod = navigatePeriod;
+        window.goToToday = goToToday;
         window.toggleDarkMode = toggleDarkMode;
         window.switchSection = switchSection;
         window.openSheet = openSheet;
@@ -1140,19 +1603,31 @@
         window.pickStatus = pickStatus;
         window.pickDelete = pickDelete;
         window.toggleMutabaah = toggleMutabaah;
+        window.completeAllMutabaah = completeAllMutabaah;
         window.onMutabaahDateChange = onMutabaahDateChange;
         window.onFilterRekapChange = onFilterRekapChange;
+        window.exportData = exportData;
+        window.exportRekapCSV = exportRekapCSV;
+        window.updateApp = updateApp;
 
+        // ==================== INIT ====================
         function init() {
             checkAuth();
             buildSheetOptions();
             renderCalendar();
             renderRekapDanKPI();
-            
             document.getElementById('sheetOverlay').addEventListener('click', closeSheet);
             switchSection('section-harian', 'harian');
-            
             initFirebaseSync();
+            
+            // Check URL params
+            const params = new URLSearchParams(window.location.search);
+            const section = params.get('section');
+            if (section === 'mutabaah' && localStorage.getItem(AUTH_KEY) === 'true') {
+                switchSection('section-mutabaah', 'mutabaah');
+            } else if (section === 'rekap') {
+                switchSection('section-rekap', 'rekap');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', init);
