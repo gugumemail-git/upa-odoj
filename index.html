@@ -550,14 +550,29 @@
                     </div>
                 </div>
 
-                <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
-                    <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4">
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Jumlah Hari Terisi per Amalan — Periode: <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
-                        </div>
-                        <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">14 Amalan</span>
-                    </div>
+<div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
+    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
+        <div>
+            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                Jumlah Hari Terisi per Amalan — Periode: 
+                <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
+            </p>
+        </div>
+        
+        <div class="flex items-center gap-2 flex-wrap">
+            <!-- Date Range Filter -->
+            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm">
+                <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
+                <input type="date" id="mutabaahStartDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
+                <input type="date" id="mutabaahEndDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+            </div>
+            
+            <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">14 Amalan</span>
+        </div>
+    </div>
+
                     <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
                         <table class="w-full text-xs text-left table-rekap min-w-[1200px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
@@ -726,7 +741,8 @@
             { id:'kurang',        label:'Kurang 1 Juz',        icon: ICONS.droplet,   color:'#475569' },
             { id:'tidak-tilawah', label:'Tidak Tilawah',       icon: ICONS.x,         color:'#dc2626' },
         ];
-
+        let mutabaahStartDate = '';
+        let mutabaahEndDate = '';
         let selectedBulan = new Date().getMonth();
         let selectedTahun = new Date().getFullYear();
         let selectedNama = ANGGOTA[0];
@@ -926,6 +942,46 @@
             ft.innerHTML = years;
         }
 
+// Fungsi untuk sinkronisasi input tanggal saat bulan/tahun berubah
+function syncMutabaahDateInputs() {
+    const startInput = document.getElementById('mutabaahStartDate');
+    const endInput = document.getElementById('mutabaahEndDate');
+    if (!startInput || !endInput) return;
+
+    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+    const firstDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+    const lastDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+
+    // Atur min & max
+    startInput.min = firstDay; startInput.max = lastDay;
+    endInput.min = firstDay; endInput.max = lastDay;
+
+    // Jika belum ada nilai atau nilai di luar bulan aktif, reset ke awal & akhir bulan
+    if (!mutabaahStartDate || !mutabaahStartDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
+        mutabaahStartDate = firstDay;
+    }
+    if (!mutabaahEndDate || !mutabaahEndDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
+        mutabaahEndDate = lastDay;
+    }
+
+    startInput.value = mutabaahStartDate;
+    endInput.value = mutabaahEndDate;
+}
+
+// Fungsi saat tanggal diubah manual oleh user
+function onMutabaahRangeChange() {
+    mutabaahStartDate = document.getElementById('mutabaahStartDate').value;
+    mutabaahEndDate = document.getElementById('mutabaahEndDate').value;
+
+    // Validasi: Jika start > end, tukar atau sesuaikan
+    if (mutabaahStartDate > mutabaahEndDate) {
+        mutabaahEndDate = mutabaahStartDate;
+        document.getElementById('mutabaahEndDate').value = mutabaahEndDate;
+    }
+
+    renderRekapDanKPI(); // Render ulang tabel
+}
+
         function onFilterRekapChange() {
             selectedBulan = parseInt(document.getElementById('filterRekapBulan').value);
             selectedTahun = parseInt(document.getElementById('filterRekapTahun').value);
@@ -1044,18 +1100,20 @@
         }
 
         // ==================== RENDER ====================
-        function renderAll() {
-            const periodeStr = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
-            document.getElementById('rekapPeriode').textContent = periodeStr;
-            document.getElementById('rekapMutabaahPeriode').textContent = periodeStr;
-            document.getElementById('chartNamaLabel').textContent = selectedNama;
-            document.getElementById('streakName').textContent = selectedNama;
-            document.getElementById('calendarMonthYear').textContent = periodeStr; 
-            document.getElementById('mutabaahNama').textContent = selectedNama;
-            renderCalendar();
-            renderRekapDanKPI();
-            renderHeatmap();
-        }
+function renderAll() {
+    const periodeStr = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+    document.getElementById('rekapPeriode').textContent = periodeStr;
+    document.getElementById('chartNamaLabel').textContent = selectedNama;
+    document.getElementById('streakName').textContent = selectedNama;
+    document.getElementById('calendarMonthYear').textContent = periodeStr; 
+    document.getElementById('mutabaahNama').textContent = selectedNama;
+    
+    syncMutabaahDateInputs(); // Pastikan ini dipanggil sebelum renderRekapDanKPI
+    
+    renderCalendar();
+    renderRekapDanKPI();
+    renderHeatmap();
+}
 
         function computeStreak(nama) {
             const total = getDaysInMonth(selectedBulan, selectedTahun);
@@ -1306,6 +1364,18 @@ function navigateMutabaahPeriod(step) {
                     </tr>`;
             }).join('');
 
+// Update Label Periode Mutabaah berdasarkan filter tanggal
+const periodeEl = document.getElementById('rekapMutabaahPeriode');
+if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
+    const d1 = parseInt(mutabaahStartDate.split('-')[2]);
+    const d2 = parseInt(mutabaahEndDate.split('-')[2]);
+    if (d1 === 1 && d2 === getDaysInMonth(selectedBulan, selectedTahun)) {
+        periodeEl.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun} (Full)`;
+    } else {
+        periodeEl.textContent = `${d1} - ${d2} ${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+    }
+}
+
             if (localStorage.getItem(AUTH_KEY) === 'true') {
                 const tbodyRekapMutabaah = document.getElementById('tbody-rekap-mutabaah');
                 const theadKolomMutabaah = document.getElementById('thead-kolom-mutabaah');
@@ -1345,20 +1415,35 @@ function navigateMutabaahPeriod(step) {
             renderCharts(meStats);
         }
 
-        function computeMutabaahStatsPerAmalan(nama) {
-            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-            const stats = new Array(MUTABAAH_LIST.length).fill(0);
-            for (let day = 1; day <= totalHari; day++) {
-                const storeKey = `${getKey()}|${nama}|${day}`;
-                const dayData = mutabaahStore[storeKey];
-                if (dayData) {
-                    MUTABAAH_LIST.forEach((_, index) => {
-                        if (dayData[index] === true) stats[index]++;
-                    });
-                }
-            }
-            return { stats };
+function computeMutabaahStatsPerAmalan(nama) {
+    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+    const stats = new Array(MUTABAAH_LIST.length).fill(0);
+    
+    // Tentukan batas tanggal (default: 1 sampai akhir bulan)
+    let startDay = 1;
+    let endDay = totalHari;
+
+    // Jika ada filter tanggal yang valid, parsing angkanya
+    if (mutabaahStartDate && mutabaahEndDate) {
+        startDay = parseInt(mutabaahStartDate.split('-')[2]);
+        endDay = parseInt(mutabaahEndDate.split('-')[2]);
+        
+        // Pastikan startDay tidak lebih besar dari endDay
+        if (startDay > endDay) { const temp = startDay; startDay = endDay; endDay = temp; }
+    }
+
+    // Loop HANYA di dalam rentang tanggal
+    for (let day = startDay; day <= endDay; day++) {
+        const storeKey = `${getKey()}|${nama}|${day}`;
+        const dayData = mutabaahStore[storeKey];
+        if (dayData) {
+            MUTABAAH_LIST.forEach((_, index) => {
+                if (dayData[index] === true) stats[index]++;
+            });
         }
+    }
+    return { stats };
+}
 
         // ==================== CHARTS ====================
         function renderCharts(meStats) {
@@ -1681,6 +1766,7 @@ function navigateMutabaahPeriod(step) {
         window.exportRekapCSV = exportRekapCSV;
         window.updateApp = updateApp;
         window.navigateMutabaahPeriod = navigateMutabaahPeriod;
+        window.onMutabaahRangeChange = onMutabaahRangeChange;
 
         // ==================== INIT ====================
         function init() {
