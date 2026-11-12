@@ -24,17 +24,11 @@
                         brand: { 50:'#ecfdf5',100:'#d1fae5',200:'#a7f3d0',300:'#6ee7b7',400:'#34d399',500:'#10b981',600:'#059669',700:'#047857',800:'#065f46',900:'#064e3b',950:'#022c22' }
                     },
                     animation: {
-                        'slide-up': 'slideUp 0.3s ease-out',
-                        'slide-down': 'slideDown 0.3s ease-out',
                         'fade-in': 'fadeIn 0.4s ease-out',
-                        'pulse-ring': 'pulseRing 1.5s ease-out infinite',
                         'bounce-in': 'bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
                     },
                     keyframes: {
-                        slideUp: { from: { transform: 'translateY(20px)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } },
-                        slideDown: { from: { transform: 'translateY(-20px)', opacity: '0' }, to: { transform: 'translateY(0)', opacity: '1' } },
                         fadeIn: { from: { opacity: '0', transform: 'translateY(10px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
-                        pulseRing: { '0%': { transform: 'scale(0.9)', opacity: '1' }, '100%': { transform: 'scale(1.5)', opacity: '0' } },
                         bounceIn: { '0%': { transform: 'scale(0.3)', opacity: '0' }, '50%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: '1' } }
                     }
                 }
@@ -159,23 +153,14 @@
         .mutabaah-checkbox svg { display: none; width: 16px; height: 16px; }
 
         /* Progress ring */
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease-in-out;
-            transform-origin: 50% 50%;
-        }
+        .progress-ring-circle { transition: stroke-dashoffset 0.5s ease-in-out; transform-origin: 50% 50%; }
 
         /* Toast */
-        .toast-container {
-            position: fixed; top: 1rem; right: 1rem; z-index: 9999;
-            display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
-        }
+        .toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
         .toast {
-            pointer-events: auto; min-width: 280px; max-width: 400px;
-            padding: 0.875rem 1rem; border-radius: 0.75rem;
-            display: flex; align-items: center; gap: 0.75rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
-            animation: slideDown 0.3s ease-out;
-            font-size: 0.875rem; font-weight: 600;
+            pointer-events: auto; min-width: 280px; max-width: 400px; padding: 0.875rem 1rem; border-radius: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            font-size: 0.875rem; font-weight: 600; animation: slideDown 0.3s ease-out;
         }
         .toast.removing { animation: fadeOut 0.2s ease-out forwards; }
         @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
@@ -189,9 +174,7 @@
         .dark .toast-warning { background: rgba(146, 64, 14, 0.9); color: #fef3c7; }
 
         /* Heatmap */
-        .heatmap-cell {
-            width: 12px; height: 12px; border-radius: 3px; transition: all 0.2s;
-        }
+        .heatmap-cell { width: 12px; height: 12px; border-radius: 3px; transition: all 0.2s; }
         .heatmap-cell:hover { transform: scale(1.5); z-index: 10; }
         .heatmap-0 { background: #f1f5f9; }
         .heatmap-1 { background: #d1fae5; }
@@ -207,66 +190,22 @@
         /* Confetti */
         .confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
 
-        /* Search highlight */
-        .search-highlight { background: #fef08a; dark: background: #854d0e; padding: 0 2px; border-radius: 2px; }
-
-        /* Skeleton loading */
-        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
-        .dark .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
         .hidden-menu { display: none !important; }
-
-        /* Swipe hint */
-        .swipe-indicator {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(16, 185, 129, 0.1); border-radius: 50%;
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            opacity: 0; transition: opacity 0.2s; pointer-events: none;
-        }
-
-        /* Print */
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; }
-            .glass-panel { background: white !important; backdrop-filter: none !important; }
-        }
 
         /* Badge */
         .badge-achievement {
-            display: inline-flex; align-items: center; gap: 0.25rem;
-            padding: 0.25rem 0.5rem; border-radius: 9999px;
-            font-size: 0.625rem; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 0.05em;
+            display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.25rem 0.5rem; border-radius: 9999px;
+            font-size: 0.625rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
         }
         .badge-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
         .badge-silver { background: linear-gradient(135deg, #e2e8f0, #cbd5e1); color: #334155; }
         .badge-bronze { background: linear-gradient(135deg, #fdba74, #fb923c); color: #7c2d12; }
-
-        /* Pull to refresh */
-        .ptr-indicator {
-            position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
-            width: 40px; height: 40px; border-radius: 50%;
-            background: #10b981; color: white;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s; opacity: 0;
-        }
-        .ptr-indicator.active { top: 20px; opacity: 1; }
-        .ptr-indicator.refreshing { animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full max-w-full">
 
     <!-- TOAST CONTAINER -->
     <div id="toastContainer" class="toast-container"></div>
-
-    <!-- UPDATE BANNER -->
-    <div id="updateBanner" class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] bg-brand-600 text-white px-4 py-2 rounded-xl shadow-lg hidden items-center gap-3 text-sm font-semibold">
-        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-        <span>Versi baru tersedia!</span>
-        <button onclick="updateApp()" class="bg-white text-brand-600 px-3 py-1 rounded-lg text-xs font-bold hover:bg-brand-50 transition">Update</button>
-    </div>
 
     <!-- SIDEBAR -->
     <aside class="hidden md:flex w-64 glass-panel flex-col justify-between shrink-0 h-screen z-30 border-r border-slate-200/50 dark:border-slate-800/50">
@@ -292,10 +231,6 @@
                 
                 <button id="menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
                     <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rekap & Grafik
-                </button>
-
-                <button id="menu-stats" onclick="switchSection('section-stats', 'stats')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
-                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> Statistik
                 </button>
             </nav>
         </div>
@@ -486,27 +421,27 @@
                             </div>
                         </div>
                         
-<div class="flex items-center gap-2 flex-wrap">
-    <!-- Tombol Navigasi Bulan -->
-    <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
-        <button onclick="navigateMutabaahPeriod(-1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan sebelumnya">
-            <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-        </button>
-        <span id="mutabaahPeriodeLabel" class="text-xs font-bold text-slate-700 dark:text-slate-200 px-1 min-w-[100px] text-center"></span>
-        <button onclick="navigateMutabaahPeriod(1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan berikutnya">
-            <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-        </button>
-    </div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Tombol Navigasi Bulan -->
+                            <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
+                                <button onclick="navigateMutabaahPeriod(-1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan sebelumnya">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                                </button>
+                                <span id="mutabaahPeriodeLabel" class="text-xs font-bold text-slate-700 dark:text-slate-200 px-1 min-w-[100px] text-center"></span>
+                                <button onclick="navigateMutabaahPeriod(1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan berikutnya">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                                </button>
+                            </div>
 
-    <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
-        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        Semua
-    </button>
-    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
-        <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-        <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-    </div>
-</div>
+                            <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Semua
+                            </button>
+                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+                                <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList"></div>
@@ -515,11 +450,14 @@
 
             <!-- SECTION REKAP -->
             <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
+                <!-- Rekap Tilawah -->
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full overflow-hidden">
                     <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
                         <div>
                             <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI TILAWAH</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                                Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
+                            </p>
                         </div>
                         <div class="flex items-center gap-2 flex-wrap">
                             <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
@@ -530,6 +468,14 @@
                             </button>
                         </div>
                     </div>
+                    <!-- Date Range Filter Tilawah -->
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm w-max mb-4">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
+                        <input type="date" id="tilawahStartDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
+                        <input type="date" id="tilawahEndDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                    </div>
+                    
                     <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
                         <table class="w-full text-xs text-left table-rekap min-w-[600px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
@@ -550,35 +496,36 @@
                     </div>
                 </div>
 
-<div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
-    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
-        <div>
-            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
-                Jumlah Hari Terisi per Amalan — Periode: 
-                <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
-            </p>
-        </div>
-        
-        <div class="flex items-center gap-2 flex-wrap">
-            <!-- Date Range Filter -->
-            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm">
-                <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
-                <input type="date" id="mutabaahStartDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-                <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
-                <input type="date" id="mutabaahEndDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-            </div>
-            
-            <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">14 Amalan</span>
-        </div>
-    </div>
+                <!-- Rekap Mutabaah -->
+                <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
+                        <div>
+                            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                                Jumlah Hari Terisi per Amalan — Periode: 
+                                <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Date Range Filter Mutabaah -->
+                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
+                                <input type="date" id="mutabaahStartDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
+                                <input type="date" id="mutabaahEndDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                            </div>
+                            
+                            <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">15 Amalan</span>
+                        </div>
+                    </div>
 
                     <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
                         <table class="w-full text-xs text-left table-rekap min-w-[1200px] table-sticky-header">
                             <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
                                 <tr>
                                     <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
-                                    <th id="header-kriteria-mutabaah" colspan="14" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
+                                    <th id="header-kriteria-mutabaah" colspan="15" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
                                 </tr>
                                 <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight"></tr>
                             </thead>
@@ -587,6 +534,7 @@
                     </div>
                 </div>
 
+                <!-- Charts -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
                         <div class="flex items-center justify-between mb-4">
@@ -599,30 +547,6 @@
                         <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4">Perbandingan Anggota</h4>
                         <div class="relative h-64"><canvas id="chartBar"></canvas></div>
                     </div>
-                </div>
-            </div>
-
-            <!-- SECTION STATISTIK (BARU) -->
-            <div id="section-stats" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
-                <!-- Leaderboard -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="icon-md text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                        Leaderboard Bulan Ini
-                    </h3>
-                    <div id="leaderboard" class="space-y-2"></div>
-                </div>
-
-                <!-- Trend Chart -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4">Trend 6 Bulan Terakhir</h3>
-                    <div class="relative h-72"><canvas id="chartTrend"></canvas></div>
-                </div>
-
-                <!-- Radar Chart -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
-                    <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4">Perbandingan Anggota (Radar)</h3>
-                    <div class="relative h-80"><canvas id="chartRadar"></canvas></div>
                 </div>
             </div>
         </main>
@@ -642,10 +566,6 @@
             <button id="mobile-menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
                 <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 <span class="text-[10px] font-bold">Rekap</span>
-            </button>
-            <button id="mobile-menu-stats" onclick="switchSection('section-stats', 'stats')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
-                <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                <span class="text-[10px] font-bold">Stats</span>
             </button>
             <button onclick="toggleDarkMode()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500">
                 <svg class="icon-md dark:hidden mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -708,21 +628,23 @@
         const AUTH_KEY = 'ODOJ_IS_LOGGED_IN';
         const PASSWORD_ADMIN = 'adminodoj'; 
 
+        // PEMBARUAN: Daftar Mutabaah Baru
         const MUTABAAH_LIST = [
-            "Tilawah Al-Qur'an minimal 1 Juz", 
-            "Qiyamullail", 
-            "Puasa Sunnah", 
-            "Dzikir Pagi", 
-            "Dzikir Petang", 
-            "Olahraga", 
-            "Mendoakan Qiyadah PKS & Jamaah", 
-            "Infaq", 
-            "Baca Terjemah Al-Qur'an", 
-            "Istighfar Minimal 100x", 
-            "Shalawat Minimal 100x", 
-            "Shalat Wajib 5 Waktu Berjamaah",
+            "Qiyamullail",
+            "Shalat Witir",
+            "Tilawah Al-Qur'an 1 Juz",
+            "Baca Terjemah Al-Qur'an",
             "Mendo'akan Palestina",
-            "Shalat Dhuha"
+            "Mendo'akan Qiyadah & Jamaah PKS",
+            "Istighfar 100x",
+            "Shalawat 100x",
+            "Infaq",
+            "Shalat Dhuha",
+            "Shalat Shubuh Berjamaah di Masjid",
+            "Shalat Dzuhur Berjamaah di Masjid",
+            "Shalat Ashar Berjamaah di Masjid",
+            "Shalat Maghrib Berjamaah di Masjid",
+            "Shalat Isya Berjamaah di Masjid"
         ];
 
         const ICONS = {
@@ -741,6 +663,9 @@
             { id:'kurang',        label:'Kurang 1 Juz',        icon: ICONS.droplet,   color:'#475569' },
             { id:'tidak-tilawah', label:'Tidak Tilawah',       icon: ICONS.x,         color:'#dc2626' },
         ];
+
+        let tilawahStartDate = '';
+        let tilawahEndDate = '';
         let mutabaahStartDate = '';
         let mutabaahEndDate = '';
         let selectedBulan = new Date().getMonth();
@@ -750,7 +675,7 @@
         let mutabaahStore = {};
         let activeEditDay = null;
         let currentMutabaahDate = '';
-        let chartDonut, chartBar, chartTrend, chartRadar;
+        let chartDonut, chartBar;
         let searchQuery = '';
 
         const getDaysInMonth = (m,y) => new Date(y, m+1, 0).getDate();
@@ -942,45 +867,57 @@
             ft.innerHTML = years;
         }
 
-// Fungsi untuk sinkronisasi input tanggal saat bulan/tahun berubah
-function syncMutabaahDateInputs() {
-    const startInput = document.getElementById('mutabaahStartDate');
-    const endInput = document.getElementById('mutabaahEndDate');
-    if (!startInput || !endInput) return;
+        // Sinkronisasi Tanggal Tilawah
+        function syncTilawahDateInputs() {
+            const startInput = document.getElementById('tilawahStartDate');
+            const endInput = document.getElementById('tilawahEndDate');
+            if (!startInput || !endInput) return;
+            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+            const firstDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+            const lastDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+            startInput.min = firstDay; startInput.max = lastDay;
+            endInput.min = firstDay; endInput.max = lastDay;
+            if (!tilawahStartDate || !tilawahStartDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) tilawahStartDate = firstDay;
+            if (!tilawahEndDate || !tilawahEndDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) tilawahEndDate = lastDay;
+            startInput.value = tilawahStartDate;
+            endInput.value = tilawahEndDate;
+        }
 
-    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-    const firstDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
-    const lastDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+        function onTilawahRangeChange() {
+            tilawahStartDate = document.getElementById('tilawahStartDate').value;
+            tilawahEndDate = document.getElementById('tilawahEndDate').value;
+            if (tilawahStartDate > tilawahEndDate) {
+                tilawahEndDate = tilawahStartDate;
+                document.getElementById('tilawahEndDate').value = tilawahEndDate;
+            }
+            renderRekapDanKPI();
+        }
 
-    // Atur min & max
-    startInput.min = firstDay; startInput.max = lastDay;
-    endInput.min = firstDay; endInput.max = lastDay;
+        // Sinkronisasi Tanggal Mutabaah
+        function syncMutabaahDateInputs() {
+            const startInput = document.getElementById('mutabaahStartDate');
+            const endInput = document.getElementById('mutabaahEndDate');
+            if (!startInput || !endInput) return;
+            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+            const firstDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+            const lastDay = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+            startInput.min = firstDay; startInput.max = lastDay;
+            endInput.min = firstDay; endInput.max = lastDay;
+            if (!mutabaahStartDate || !mutabaahStartDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) mutabaahStartDate = firstDay;
+            if (!mutabaahEndDate || !mutabaahEndDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) mutabaahEndDate = lastDay;
+            startInput.value = mutabaahStartDate;
+            endInput.value = mutabaahEndDate;
+        }
 
-    // Jika belum ada nilai atau nilai di luar bulan aktif, reset ke awal & akhir bulan
-    if (!mutabaahStartDate || !mutabaahStartDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
-        mutabaahStartDate = firstDay;
-    }
-    if (!mutabaahEndDate || !mutabaahEndDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
-        mutabaahEndDate = lastDay;
-    }
-
-    startInput.value = mutabaahStartDate;
-    endInput.value = mutabaahEndDate;
-}
-
-// Fungsi saat tanggal diubah manual oleh user
-function onMutabaahRangeChange() {
-    mutabaahStartDate = document.getElementById('mutabaahStartDate').value;
-    mutabaahEndDate = document.getElementById('mutabaahEndDate').value;
-
-    // Validasi: Jika start > end, tukar atau sesuaikan
-    if (mutabaahStartDate > mutabaahEndDate) {
-        mutabaahEndDate = mutabaahStartDate;
-        document.getElementById('mutabaahEndDate').value = mutabaahEndDate;
-    }
-
-    renderRekapDanKPI(); // Render ulang tabel
-}
+        function onMutabaahRangeChange() {
+            mutabaahStartDate = document.getElementById('mutabaahStartDate').value;
+            mutabaahEndDate = document.getElementById('mutabaahEndDate').value;
+            if (mutabaahStartDate > mutabaahEndDate) {
+                mutabaahEndDate = mutabaahStartDate;
+                document.getElementById('mutabaahEndDate').value = mutabaahEndDate;
+            }
+            renderRekapDanKPI();
+        }
 
         function onFilterRekapChange() {
             selectedBulan = parseInt(document.getElementById('filterRekapBulan').value);
@@ -1019,7 +956,7 @@ function onMutabaahRangeChange() {
                 return;
             }
 
-            ['section-harian', 'section-mutabaah', 'section-rekap', 'section-stats'].forEach(id => {
+            ['section-harian', 'section-mutabaah', 'section-rekap'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) { el.classList.add('hidden'); el.classList.remove('fade-in'); }
             });
@@ -1030,7 +967,7 @@ function onMutabaahRangeChange() {
             void activeEl.offsetWidth; 
             activeEl.classList.add('fade-in');
             
-            const menus = ['harian', 'mutabaah', 'rekap', 'stats'];
+            const menus = ['harian', 'mutabaah', 'rekap'];
             const activeClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 bg-white dark:bg-slate-800 text-brand-700 dark:text-brand-300 shadow-sm border border-slate-200 dark:border-slate-700 font-bold text-sm';
             const inactiveClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm';
             const mobileActive = 'flex flex-col items-center justify-center w-full h-full text-brand-600 dark:text-brand-400 transition-colors duration-200';
@@ -1049,12 +986,11 @@ function onMutabaahRangeChange() {
                 }
             });
 
-            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': "Mutaba'ah Yaumiyah", 'rekap': 'Rekap & Grafik', 'stats': 'Statistik & Leaderboard' };
+            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': "Mutaba'ah Yaumiyah", 'rekap': 'Rekap & Grafik' };
             document.getElementById('page-title').textContent = titles[menuId] || '';
             
             if (menuId === 'mutabaah') initMutabaahDateInput();
             if (menuId === 'rekap') { populateRekapFilters(); renderRekapDanKPI(); }
-            if (menuId === 'stats') renderStats();
         }
 
         // ==================== DARK MODE ====================
@@ -1063,8 +999,6 @@ function onMutabaahRangeChange() {
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             if (chartDonut) chartDonut.update();
             if (chartBar) chartBar.update();
-            if (chartTrend) chartTrend.update();
-            if (chartRadar) chartRadar.update();
         }
         
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -1100,20 +1034,21 @@ function onMutabaahRangeChange() {
         }
 
         // ==================== RENDER ====================
-function renderAll() {
-    const periodeStr = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
-    document.getElementById('rekapPeriode').textContent = periodeStr;
-    document.getElementById('chartNamaLabel').textContent = selectedNama;
-    document.getElementById('streakName').textContent = selectedNama;
-    document.getElementById('calendarMonthYear').textContent = periodeStr; 
-    document.getElementById('mutabaahNama').textContent = selectedNama;
-    
-    syncMutabaahDateInputs(); // Pastikan ini dipanggil sebelum renderRekapDanKPI
-    
-    renderCalendar();
-    renderRekapDanKPI();
-    renderHeatmap();
-}
+        function renderAll() {
+            const periodeStr = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+            document.getElementById('rekapPeriode').textContent = periodeStr;
+            document.getElementById('chartNamaLabel').textContent = selectedNama;
+            document.getElementById('streakName').textContent = selectedNama;
+            document.getElementById('calendarMonthYear').textContent = periodeStr; 
+            document.getElementById('mutabaahNama').textContent = selectedNama;
+            
+            syncTilawahDateInputs();
+            syncMutabaahDateInputs();
+            
+            renderCalendar();
+            renderRekapDanKPI();
+            renderHeatmap();
+        }
 
         function computeStreak(nama) {
             const total = getDaysInMonth(selectedBulan, selectedTahun);
@@ -1205,59 +1140,47 @@ function renderAll() {
         }
 
         // ==================== MUTABAAH ====================
- function initMutabaahDateInput() {
-    const input = document.getElementById('mutabaahDateInput');
-    const periodeLabel = document.getElementById('mutabaahPeriodeLabel');
-    if (!input) return;
+        function initMutabaahDateInput() {
+            const input = document.getElementById('mutabaahDateInput');
+            const periodeLabel = document.getElementById('mutabaahPeriodeLabel');
+            if (!input) return;
 
-    // Update label bulan di header mutabaah
-    if (periodeLabel) {
-        periodeLabel.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
-    }
+            if (periodeLabel) periodeLabel.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
 
-    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-    const minDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
-    const maxDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
-    input.min = minDate;
-    input.max = maxDate;
+            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+            const minDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+            const maxDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${totalHari}`;
+            input.min = minDate;
+            input.max = maxDate;
 
-    // Jika currentMutabaahDate tidak sesuai dengan bulan yang dipilih, reset
-    if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
-        const today = new Date();
-        if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
-            currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-        } else {
-            currentMutabaahDate = minDate;
+            if (!currentMutabaahDate || !currentMutabaahDate.startsWith(`${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`)) {
+                const today = new Date();
+                if (today.getMonth() === selectedBulan && today.getFullYear() === selectedTahun) {
+                    currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+                } else {
+                    currentMutabaahDate = minDate;
+                }
+            }
+            input.value = currentMutabaahDate;
+            renderMutabaah();
         }
-    }
-    
-    input.value = currentMutabaahDate;
-    renderMutabaah();
-}
 
-// Fungsi baru untuk navigasi bulan di Mutabaah
-function navigateMutabaahPeriod(step) {
-    let idx = selectedBulan + step;
-    let tahun = selectedTahun;
-    if (idx < 0) { idx = 11; tahun--; }
-    if (idx > 11) { idx = 0; tahun++; }
-    if (tahun < 2024) tahun = 2024;
-    if (tahun > 2030) tahun = 2030;
-    
-    selectedBulan = idx;
-    selectedTahun = tahun;
-    
-    // Reset tanggal ke hari pertama bulan baru agar tidak error
-    currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
-    
-    // Sinkronkan filter dropdown rekap
-    populateRekapFilters();
-    
-    // Render ulang
-    initMutabaahDateInput();
-    renderAll();
-    haptic([5]); // Getaran halus di HP
-}
+        function navigateMutabaahPeriod(step) {
+            let idx = selectedBulan + step;
+            let tahun = selectedTahun;
+            if (idx < 0) { idx = 11; tahun--; }
+            if (idx > 11) { idx = 0; tahun++; }
+            if (tahun < 2024) tahun = 2024;
+            if (tahun > 2030) tahun = 2030;
+            
+            selectedBulan = idx;
+            selectedTahun = tahun;
+            currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
+            populateRekapFilters();
+            initMutabaahDateInput();
+            renderAll();
+            haptic([5]);
+        }
 
         function onMutabaahDateChange() {
             currentMutabaahDate = document.getElementById('mutabaahDateInput').value;
@@ -1271,7 +1194,6 @@ function navigateMutabaahPeriod(step) {
             const currentData = mutabaahStore[storeKey] || {};
             const listContainer = document.getElementById('mutabaahList');
             
-            // Update progress ring
             const checkedCount = Object.values(currentData).filter(Boolean).length;
             const percent = Math.round((checkedCount / MUTABAAH_LIST.length) * 100);
             const ring = document.getElementById('mutabaahProgressRing');
@@ -1326,13 +1248,22 @@ function navigateMutabaahPeriod(step) {
         function computeStats(nama) {
             const total = getDaysInMonth(selectedBulan, selectedTahun);
             const stats = { kholas:0, progress:0, 'tidak-laporan':0, kurang:0, 'tidak-tilawah':0 };
-            for(let day=1; day<=total; day++){
+            
+            let startDay = 1;
+            let endDay = total;
+            if (tilawahStartDate && tilawahEndDate) {
+                startDay = parseInt(tilawahStartDate.split('-')[2]);
+                endDay = parseInt(tilawahEndDate.split('-')[2]);
+                if (startDay > endDay) { const temp = startDay; startDay = endDay; endDay = temp; }
+            }
+
+            for(let day=startDay; day<=endDay; day++){
                 const rec = getRecord(nama, day);
                 if(rec && stats[rec.status] !== undefined){ stats[rec.status]++; }
             }
-            stats.totalHari = total;
-            stats.terisi = total - (stats['tidak-laporan'] + stats['tidak-tilawah']); 
-            stats.persenKholas = total ? Math.round((stats.kholas/total)*100) : 0;
+            stats.totalHari = endDay - startDay + 1;
+            stats.terisi = stats.totalHari - (stats['tidak-laporan'] + stats['tidak-tilawah']); 
+            stats.persenKholas = stats.totalHari ? Math.round((stats.kholas/stats.totalHari)*100) : 0;
             return stats;
         }
 
@@ -1345,6 +1276,18 @@ function navigateMutabaahPeriod(step) {
             document.getElementById('kpiBarKholas').style.width = meStats.persenKholas + '%';
             document.getElementById('kpiHariTerisi').textContent = meStats.terisi;
             document.getElementById('kpiTotalHari').textContent = meStats.totalHari;
+
+            // Update Label Periode Tilawah
+            const periodeTilawahEl = document.getElementById('rekapPeriode');
+            if (periodeTilawahEl && tilawahStartDate && tilawahEndDate) {
+                const d1 = parseInt(tilawahStartDate.split('-')[2]);
+                const d2 = parseInt(tilawahEndDate.split('-')[2]);
+                if (d1 === 1 && d2 === getDaysInMonth(selectedBulan, selectedTahun)) {
+                    periodeTilawahEl.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun} (Full)`;
+                } else {
+                    periodeTilawahEl.textContent = `${d1} - ${d2} ${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+                }
+            }
 
             const tbodyRekapTilawah = document.getElementById('tbody-rekap-tilawah');
             tbodyRekapTilawah.innerHTML = ANGGOTA.map(nama => {
@@ -1364,17 +1307,17 @@ function navigateMutabaahPeriod(step) {
                     </tr>`;
             }).join('');
 
-// Update Label Periode Mutabaah berdasarkan filter tanggal
-const periodeEl = document.getElementById('rekapMutabaahPeriode');
-if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
-    const d1 = parseInt(mutabaahStartDate.split('-')[2]);
-    const d2 = parseInt(mutabaahEndDate.split('-')[2]);
-    if (d1 === 1 && d2 === getDaysInMonth(selectedBulan, selectedTahun)) {
-        periodeEl.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun} (Full)`;
-    } else {
-        periodeEl.textContent = `${d1} - ${d2} ${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
-    }
-}
+            // Update Label Periode Mutabaah
+            const periodeEl = document.getElementById('rekapMutabaahPeriode');
+            if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
+                const d1 = parseInt(mutabaahStartDate.split('-')[2]);
+                const d2 = parseInt(mutabaahEndDate.split('-')[2]);
+                if (d1 === 1 && d2 === getDaysInMonth(selectedBulan, selectedTahun)) {
+                    periodeEl.textContent = `${BULAN_LIST[selectedBulan]} ${selectedTahun} (Full)`;
+                } else {
+                    periodeEl.textContent = `${d1} - ${d2} ${BULAN_LIST[selectedBulan]} ${selectedTahun}`;
+                }
+            }
 
             if (localStorage.getItem(AUTH_KEY) === 'true') {
                 const tbodyRekapMutabaah = document.getElementById('tbody-rekap-mutabaah');
@@ -1384,8 +1327,8 @@ if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
                 headerKriteriaMutabaah.colSpan = MUTABAAH_LIST.length;
                 badgeJumlahAmalan.textContent = `${MUTABAAH_LIST.length} Amalan`;
                 theadKolomMutabaah.innerHTML = MUTABAAH_LIST.map((amalan, idx) => {
-                    let shortLabel = amalan.replace(' minimal 1 Juz', '<br>1 Juz').replace('Qiyadah PKS & Jamaah', 'QIYADAH<br>PKS & JAMAAH').replace('Minimal 100x', '<br>100X').replace('5 Waktu ', '');
-                    return `<th class="px-2 py-2 border-r border-brand-500/50 w-[${100/14}%] text-[8px] leading-tight">${shortLabel.toUpperCase()}</th>`;
+                    let shortLabel = amalan.replace(' minimal 1 Juz', '<br>1 Juz').replace('Qiyadah & Jamaah PKS', 'QIYADAH<br>& JAMAAH').replace('100x', '<br>100X').replace(' Berjamaah di Masjid', '<br>Berjamaah');
+                    return `<th class="px-2 py-2 border-r border-brand-500/50 w-[${100/MUTABAAH_LIST.length}%] text-[8px] leading-tight">${shortLabel.toUpperCase()}</th>`;
                 }).join('');
                 tbodyRekapMutabaah.innerHTML = ANGGOTA.map(nama => {
                     const { stats } = computeMutabaahStatsPerAmalan(nama);
@@ -1405,45 +1348,41 @@ if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
                 }).join('');
             }
 
+            // PEMBARUAN: Tampilkan angka di Legend Donut
             const legendWrap = document.getElementById('customLegendDonut');
             legendWrap.innerHTML = STATUS.map((s) => `
                 <div class="flex items-center gap-1.5">
                     <span style="background:${s.color}" class="w-3 h-3 rounded-sm"></span>
-                    <span>${s.label}</span>
+                    <span>${s.label} <span class="text-brand-600 dark:text-brand-400 font-black">(${meStats[s.id] || 0})</span></span>
                 </div>
             `).join('');
+            
             renderCharts(meStats);
         }
 
-function computeMutabaahStatsPerAmalan(nama) {
-    const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
-    const stats = new Array(MUTABAAH_LIST.length).fill(0);
-    
-    // Tentukan batas tanggal (default: 1 sampai akhir bulan)
-    let startDay = 1;
-    let endDay = totalHari;
+        function computeMutabaahStatsPerAmalan(nama) {
+            const totalHari = getDaysInMonth(selectedBulan, selectedTahun);
+            const stats = new Array(MUTABAAH_LIST.length).fill(0);
+            
+            let startDay = 1;
+            let endDay = totalHari;
+            if (mutabaahStartDate && mutabaahEndDate) {
+                startDay = parseInt(mutabaahStartDate.split('-')[2]);
+                endDay = parseInt(mutabaahEndDate.split('-')[2]);
+                if (startDay > endDay) { const temp = startDay; startDay = endDay; endDay = temp; }
+            }
 
-    // Jika ada filter tanggal yang valid, parsing angkanya
-    if (mutabaahStartDate && mutabaahEndDate) {
-        startDay = parseInt(mutabaahStartDate.split('-')[2]);
-        endDay = parseInt(mutabaahEndDate.split('-')[2]);
-        
-        // Pastikan startDay tidak lebih besar dari endDay
-        if (startDay > endDay) { const temp = startDay; startDay = endDay; endDay = temp; }
-    }
-
-    // Loop HANYA di dalam rentang tanggal
-    for (let day = startDay; day <= endDay; day++) {
-        const storeKey = `${getKey()}|${nama}|${day}`;
-        const dayData = mutabaahStore[storeKey];
-        if (dayData) {
-            MUTABAAH_LIST.forEach((_, index) => {
-                if (dayData[index] === true) stats[index]++;
-            });
+            for (let day = startDay; day <= endDay; day++) {
+                const storeKey = `${getKey()}|${nama}|${day}`;
+                const dayData = mutabaahStore[storeKey];
+                if (dayData) {
+                    MUTABAAH_LIST.forEach((_, index) => {
+                        if (dayData[index] === true) stats[index]++;
+                    });
+                }
+            }
+            return { stats };
         }
-    }
-    return { stats };
-}
 
         // ==================== CHARTS ====================
         function renderCharts(meStats) {
@@ -1486,122 +1425,6 @@ function computeMutabaahStatsPerAmalan(nama) {
                     scales: {
                         x: { stacked: false, ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } },
                         y: { beginAtZero: true, ticks: { precision: 0, color: textColor, font: { size: 10 } }, grid: { color: gridColor } }
-                    }
-                }
-            });
-        }
-
-        // ==================== STATS SECTION ====================
-        function renderStats() {
-            renderLeaderboard();
-            renderTrendChart();
-            renderRadarChart();
-        }
-
-        function renderLeaderboard() {
-            const container = document.getElementById('leaderboard');
-            if (!container) return;
-            const scores = ANGGOTA.map(n => {
-                const s = computeStats(n);
-                const total = s.kholas * 5 + s.progress * 3 + s.kurang * 1;
-                return { nama: n, score: total, kholas: s.kholas, persen: s.persenKholas };
-            }).sort((a,b) => b.score - a.score);
-
-            const medals = ['🥇','🥈','🥉'];
-            container.innerHTML = scores.map((s, i) => `
-                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-                    <div class="w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm ${i < 3 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">${i < 3 ? medals[i] : i+1}</div>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-bold text-sm text-slate-800 dark:text-slate-200 truncate">${s.nama}</p>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400">${s.kholas} hari kholas • ${s.persen}%</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-sm font-extrabold text-brand-600">${s.score}</p>
-                        <p class="text-[9px] text-slate-400">poin</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderTrendChart() {
-            if (typeof Chart === 'undefined') return;
-            const canvas = document.getElementById('chartTrend');
-            if (!canvas) return;
-            if (chartTrend) chartTrend.destroy();
-
-            const months = [];
-            for (let i = 5; i >= 0; i--) {
-                let m = selectedBulan - i;
-                let y = selectedTahun;
-                while (m < 0) { m += 12; y--; }
-                months.push({ m, y, label: `${BULAN_LIST[m].slice(0,3)} ${y}` });
-            }
-
-            const datasets = [{
-                label: 'Kholas',
-                data: months.map(({m, y}) => {
-                    let count = 0;
-                    const total = getDaysInMonth(m, y);
-                    const key = `${y}-${String(m+1).padStart(2,'0')}|${selectedNama}`;
-                    if (dataStore[key]) {
-                        for (let d = 1; d <= total; d++) {
-                            if (dataStore[key][d] && dataStore[key][d].status === 'kholas') count++;
-                        }
-                    }
-                    return count;
-                }),
-                borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4
-            }];
-
-            const isDark = document.documentElement.classList.contains('dark');
-            chartTrend = new Chart(canvas, {
-                type: 'line',
-                data: { labels: months.map(m => m.label), datasets },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { display: false } },
-                        y: { beginAtZero: true, ticks: { precision: 0, color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { color: isDark ? 'rgba(148,163,184,0.1)' : 'rgba(100,116,139,0.1)' } }
-                    }
-                }
-            });
-        }
-
-        function renderRadarChart() {
-            if (typeof Chart === 'undefined') return;
-            const canvas = document.getElementById('chartRadar');
-            if (!canvas) return;
-            if (chartRadar) chartRadar.destroy();
-
-            const labels = ['Kholas', 'Progress', 'Kurang', 'Tdk Lapor', 'Tdk Tilawah'];
-            const colors = ['#10b981','#f59e0b','#64748b','#ec4899','#ef4444'];
-            const datasets = ANGGOTA.slice(0, 5).map((nama, i) => {
-                const s = computeStats(nama);
-                return {
-                    label: nama,
-                    data: [s.kholas, s.progress, s.kurang, s['tidak-laporan'], s['tidak-tilawah']],
-                    borderColor: colors[i % colors.length],
-                    backgroundColor: colors[i % colors.length] + '20',
-                    pointBackgroundColor: colors[i % colors.length],
-                    borderWidth: 2
-                };
-            });
-
-            const isDark = document.documentElement.classList.contains('dark');
-            chartRadar = new Chart(canvas, {
-                type: 'radar',
-                data: { labels, datasets },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } } } },
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            ticks: { precision: 0, color: isDark ? '#94a3b8' : '#64748b', font: { size: 9 }, backdropColor: 'transparent' },
-                            grid: { color: isDark ? 'rgba(148,163,184,0.15)' : 'rgba(100,116,139,0.15)' },
-                            pointLabels: { color: isDark ? '#cbd5e1' : '#475569', font: { size: 10, weight: 'bold' } }
-                        }
                     }
                 }
             });
@@ -1767,6 +1590,7 @@ function computeMutabaahStatsPerAmalan(nama) {
         window.updateApp = updateApp;
         window.navigateMutabaahPeriod = navigateMutabaahPeriod;
         window.onMutabaahRangeChange = onMutabaahRangeChange;
+        window.onTilawahRangeChange = onTilawahRangeChange;
 
         // ==================== INIT ====================
         function init() {
