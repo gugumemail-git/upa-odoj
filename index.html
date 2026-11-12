@@ -40,7 +40,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <script>
-    // Plugin Chart.js untuk menampilkan angka di atas bar
     const barLabelPlugin = {
         id: 'barLabelPlugin',
         afterDatasetsDraw(chart) {
@@ -75,12 +74,7 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
 
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
         .dark .glass-panel { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); }
 
         .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
@@ -122,9 +116,7 @@
         .calendar-cell.empty { cursor: default; }
         .calendar-cell.empty:hover { background: transparent; transform: none; }
         .calendar-cell.today { border-color: #10b981; }
-        .calendar-cell.today::after {
-            content: ''; position: absolute; bottom: 2px; width: 4px; height: 4px; border-radius: 50%; background: #10b981;
-        }
+        .calendar-cell.today::after { content: ''; position: absolute; bottom: 2px; width: 4px; height: 4px; border-radius: 50%; background: #10b981; }
         .calendar-cell .day-num { font-size: 12px; font-weight: 700; color: #334155; line-height: 1; }
         .dark .calendar-cell .day-num { color: #e2e8f0; }
         .calendar-cell.other-month .day-num { color: #cbd5e1; }
@@ -135,8 +127,7 @@
         /* Mutabaah */
         .mutabaah-item {
             display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
-            border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; transition: all 0.2s;
-            user-select: none;
+            border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; transition: all 0.2s; user-select: none;
         }
         .mutabaah-item:hover { border-color: #10b981; background: #f0fdf4; transform: translateX(2px); }
         .mutabaah-item:active { transform: scale(0.98); }
@@ -152,7 +143,6 @@
         .mutabaah-item.checked .mutabaah-checkbox svg { display: block; color: white; }
         .mutabaah-checkbox svg { display: none; width: 16px; height: 16px; }
 
-        /* Progress ring */
         .progress-ring-circle { transition: stroke-dashoffset 0.5s ease-in-out; transform-origin: 50% 50%; }
 
         /* Toast */
@@ -187,9 +177,7 @@
         .dark .heatmap-3 { background: #10b981; }
         .dark .heatmap-4 { background: #34d399; }
 
-        /* Confetti */
         .confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
-
         .hidden-menu { display: none !important; }
 
         /* Badge */
@@ -200,12 +188,54 @@
         .badge-gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; }
         .badge-silver { background: linear-gradient(135deg, #e2e8f0, #cbd5e1); color: #334155; }
         .badge-bronze { background: linear-gradient(135deg, #fdba74, #fb923c); color: #7c2d12; }
+
+        /* Skeleton Loading */
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+        .dark .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* View Transitions */
+        @view-transition { navigation: auto; }
+        ::view-transition-old(root) { animation: fadeOut 0.2s ease-out; }
+        ::view-transition-new(root) { animation: fadeIn 0.3s ease-out; }
+
+        /* Avatar */
+        .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; color: white; flex-shrink: 0; }
+
+        /* FAB */
+        .fab {
+            position: fixed; bottom: 5rem; right: 1.5rem; width: 56px; height: 56px; border-radius: 50%;
+            background: #059669; color: white; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.5); z-index: 40; transition: all 0.2s;
+        }
+        @media (min-width: 768px) { .fab { bottom: 2rem; right: 2rem; } }
+        .fab:hover { transform: scale(1.1); box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.6); }
+        .fab:active { transform: scale(0.95); }
+
+        /* Pull to Refresh */
+        .ptr-indicator {
+            position: fixed; top: -60px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 40px; border-radius: 50%; background: #10b981; color: white;
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s; opacity: 0; z-index: 50;
+        }
+        .ptr-indicator.active { top: 20px; opacity: 1; }
+        .ptr-indicator.refreshing { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: translateX(-50%) rotate(360deg); } }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 antialiased h-screen flex overflow-hidden transition-colors duration-300 w-full max-w-full">
 
-    <!-- TOAST CONTAINER -->
     <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Pull to Refresh -->
+    <div id="ptrIndicator" class="ptr-indicator">
+        <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+    </div>
+
+    <!-- FAB Quick Log -->
+    <button id="fabQuickLog" class="fab hidden" onclick="quickLogToday()" title="Lapor Tilawah Hari Ini">
+        <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+    </button>
 
     <!-- SIDEBAR -->
     <aside class="hidden md:flex w-64 glass-panel flex-col justify-between shrink-0 h-screen z-30 border-r border-slate-200/50 dark:border-slate-800/50">
@@ -231,6 +261,11 @@
                 
                 <button id="menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
                     <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg> Rekap & Grafik
+                </button>
+
+                <!-- Tab Statistik Dihidupkan Kembali -->
+                <button id="menu-stats" onclick="switchSection('section-stats', 'stats')" class="w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm">
+                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg> Statistik
                 </button>
             </nav>
         </div>
@@ -268,7 +303,6 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto relative">
-                <!-- Search -->
                 <div class="hidden md:flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
                     <svg class="icon-sm text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     <input type="text" id="searchInput" placeholder="Cari anggota..." class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none ml-2 w-32" oninput="onSearchChange()">
@@ -286,266 +320,299 @@
             </div>
         </header>
 
-        <main class="p-4 md:p-8 space-y-8 flex-1 max-w-7xl mx-auto w-full pb-24 md:pb-8 overflow-x-hidden">
-            
-            <!-- SECTION 1: HARIAN -->
-            <div id="section-harian" class="scroll-mt-24 space-y-8 w-full animate-fade-in">
+        <main class="p-4 md:p-8 space-y-8 flex-1 max-w-7xl mx-auto w-full pb-24 md:pb-8 overflow-x-hidden" id="mainContent">
+            <!-- Skeleton Loading -->
+            <div id="skeletonLoader" class="space-y-8">
                 <div class="bento-grid">
-                    <div class="bento-item bento-span-2 bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-xl shadow-brand-500/20 relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-                        <div class="relative z-10 flex flex-col justify-between h-full">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2 text-brand-100 font-semibold text-xs uppercase tracking-wider">
-                                    <svg class="icon-sm text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> Streak Kholas
+                    <div class="bento-item bento-span-2 skeleton h-40"></div>
+                    <div class="bento-item skeleton h-40"></div>
+                    <div class="bento-item skeleton h-40"></div>
+                </div>
+                <div class="skeleton h-96 w-full"></div>
+            </div>
+
+            <div id="actualContent" class="hidden space-y-8">
+                <!-- SECTION 1: HARIAN -->
+                <div id="section-harian" class="scroll-mt-24 space-y-8 w-full animate-fade-in">
+                    <div class="bento-grid">
+                        <div class="bento-item bento-span-2 bg-gradient-to-br from-brand-600 to-brand-800 text-white shadow-xl shadow-brand-500/20 relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                            <div class="relative z-10 flex flex-col justify-between h-full">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2 text-brand-100 font-semibold text-xs uppercase tracking-wider">
+                                        <svg class="icon-sm text-amber-300" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg> Streak Kholas
+                                    </div>
+                                    <div id="badgeContainer"></div>
                                 </div>
-                                <div id="badgeContainer"></div>
+                                <div class="mt-4">
+                                    <div class="flex items-baseline gap-2">
+                                        <span id="streakCount" class="text-5xl font-extrabold">0</span>
+                                        <span class="text-sm font-semibold text-brand-200">Hari Beruntun</span>
+                                    </div>
+                                    <p class="text-xs text-brand-100 mt-2">Terus jaga konsistensi tilawah, <span id="streakName" class="font-bold text-white"></span>!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bento-item bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col justify-between hover-lift">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">% Kholas</span>
+                                <svg class="icon-sm text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                             </div>
                             <div class="mt-4">
-                                <div class="flex items-baseline gap-2">
-                                    <span id="streakCount" class="text-5xl font-extrabold">0</span>
-                                    <span class="text-sm font-semibold text-brand-200">Hari Beruntun</span>
-                                </div>
-                                <p class="text-xs text-brand-100 mt-2">Terus jaga konsistensi tilawah, <span id="streakName" class="font-bold text-white"></span>!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bento-item bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col justify-between hover-lift">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">% Kholas</span>
-                            <svg class="icon-sm text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        </div>
-                        <div class="mt-4">
-                            <span id="kpiPersenKholas" class="text-4xl font-extrabold text-slate-900 dark:text-white">0%</span>
-                            <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
-                                <div id="kpiBarKholas" class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bento-item bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col justify-between hover-lift">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Hari Terisi</span>
-                            <svg class="icon-sm text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
-                        <div class="mt-4">
-                            <span id="kpiHariTerisi" class="text-4xl font-extrabold text-slate-900 dark:text-white">0</span>
-                            <span class="text-sm text-slate-400 font-semibold">/ <span id="kpiTotalHari"></span> hari</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8 w-full relative" id="calendarContainer">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-                            Laporan Tilawah<br><span id="calendarMonthYear" class="text-lg md:text-xl text-brand-600">Oktober 2026</span>
-                        </h3>
-                        <div class="flex items-center gap-1 shrink-0">
-                            <button onclick="navigatePeriod(-1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan sebelumnya (←)">
-                                <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
-                            </button>
-                            <button onclick="goToToday()" class="p-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Hari ini">
-                                <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            </button>
-                            <button onclick="navigatePeriod(1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan berikutnya (→)">
-                                <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="calendar-header">
-                        <div class="calendar-header-cell">Ahad</div>
-                        <div class="calendar-header-cell">Sen</div>
-                        <div class="calendar-header-cell">Sel</div>
-                        <div class="calendar-header-cell">Rab</div>
-                        <div class="calendar-header-cell">Kam</div>
-                        <div class="calendar-header-cell">Jum</div>
-                        <div class="calendar-header-cell">Sab</div>
-                    </div>
-                    
-                    <div id="calendarGrid" class="calendar-grid"></div>
-                    
-                    <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-                        <div class="flex flex-wrap items-center gap-x-5 gap-y-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
-                            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Status:</span>
-                            <span class="flex items-center gap-1.5"><span class="text-brand-600 dark:text-brand-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg></span> Kholas</span>
-                            <span class="flex items-center gap-1.5"><span class="text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Progress</span>
-                            <span class="flex items-center gap-1.5"><span class="text-pink-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></span> Tdk Lapor</span>
-                            <span class="flex items-center gap-1.5"><span class="text-slate-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg></span> Kurang</span>
-                            <span class="flex items-center gap-1.5"><span class="text-rose-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></span> Tdk Tilawah</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Heatmap Konsistensi -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Heatmap Konsistensi</h3>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Visualisasi intensitas tilawah 6 bulan terakhir</p>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <div id="heatmapContainer" class="flex gap-1 min-w-max"></div>
-                        <div class="flex items-center gap-2 mt-3 text-[10px] text-slate-500 dark:text-slate-400">
-                            <span>Kurang</span>
-                            <div class="flex gap-0.5">
-                                <div class="heatmap-cell heatmap-0"></div>
-                                <div class="heatmap-cell heatmap-1"></div>
-                                <div class="heatmap-cell heatmap-2"></div>
-                                <div class="heatmap-cell heatmap-3"></div>
-                                <div class="heatmap-cell heatmap-4"></div>
-                            </div>
-                            <span>Banyak</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION MUTABAAH -->
-            <div id="section-mutabaah" class="scroll-mt-24 hidden w-full animate-fade-in">
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-                        <div class="flex items-center gap-4">
-                            <!-- Progress Ring -->
-                            <div class="relative w-16 h-16 shrink-0">
-                                <svg class="w-16 h-16 transform -rotate-90">
-                                    <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="none" class="text-slate-100 dark:text-slate-800"/>
-                                    <circle id="mutabaahProgressRing" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="6" fill="none" stroke-linecap="round" class="progress-ring-circle" stroke-dasharray="176" stroke-dashoffset="176"/>
-                                </svg>
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <span id="mutabaahProgressText" class="text-xs font-extrabold text-brand-600">0%</span>
+                                <span id="kpiPersenKholas" class="text-4xl font-extrabold text-slate-900 dark:text-white">0%</span>
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                                    <div id="kpiBarKholas" class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="bento-item bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm flex flex-col justify-between hover-lift">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Hari Terisi</span>
+                                <svg class="icon-sm text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div class="mt-4">
+                                <span id="kpiHariTerisi" class="text-4xl font-extrabold text-slate-900 dark:text-white">0</span>
+                                <span class="text-sm text-slate-400 font-semibold">/ <span id="kpiTotalHari"></span> hari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8 w-full relative" id="calendarContainer">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+                                Laporan Tilawah<br><span id="calendarMonthYear" class="text-lg md:text-xl text-brand-600">Oktober 2026</span>
+                            </h3>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button onclick="navigatePeriod(-1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan sebelumnya (←)">
+                                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path></svg>
+                                </button>
+                                <button onclick="goToToday()" class="p-2 text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Hari ini">
+                                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </button>
+                                <button onclick="navigatePeriod(1)" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition" title="Bulan berikutnya (→)">
+                                    <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="calendar-header">
+                            <div class="calendar-header-cell">Ahad</div>
+                            <div class="calendar-header-cell">Sen</div>
+                            <div class="calendar-header-cell">Sel</div>
+                            <div class="calendar-header-cell">Rab</div>
+                            <div class="calendar-header-cell">Kam</div>
+                            <div class="calendar-header-cell">Jum</div>
+                            <div class="calendar-header-cell">Sab</div>
+                        </div>
+                        
+                        <div id="calendarGrid" class="calendar-grid"></div>
+                        
+                        <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+                            <div class="flex flex-wrap items-center gap-x-5 gap-y-3 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+                                <span class="text-xs font-bold text-slate-800 dark:text-slate-200">Status:</span>
+                                <span class="flex items-center gap-1.5"><span class="text-brand-600 dark:text-brand-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg></span> Kholas</span>
+                                <span class="flex items-center gap-1.5"><span class="text-amber-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span> Progress</span>
+                                <span class="flex items-center gap-1.5"><span class="text-pink-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg></span> Tdk Lapor</span>
+                                <span class="flex items-center gap-1.5"><span class="text-slate-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg></span> Kurang</span>
+                                <span class="flex items-center gap-1.5"><span class="text-rose-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></span> Tdk Tilawah</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
                             <div>
-                                <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mutaba'ah Yaumiyah</h3>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Ceklis amalan harian — <span id="mutabaahNama" class="font-bold text-brand-600"></span></p>
+                                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Heatmap Konsistensi</h3>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400">Visualisasi intensitas tilawah 6 bulan terakhir</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <!-- Tombol Navigasi Bulan -->
-                            <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
-                                <button onclick="navigateMutabaahPeriod(-1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan sebelumnya">
-                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-                                </button>
-                                <span id="mutabaahPeriodeLabel" class="text-xs font-bold text-slate-700 dark:text-slate-200 px-1 min-w-[100px] text-center"></span>
-                                <button onclick="navigateMutabaahPeriod(1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan berikutnya">
-                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-                                </button>
-                            </div>
-
-                            <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
-                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Semua
-                            </button>
-                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
-                                <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                        <div class="overflow-x-auto">
+                            <div id="heatmapContainer" class="flex gap-1 min-w-max"></div>
+                            <div class="flex items-center gap-2 mt-3 text-[10px] text-slate-500 dark:text-slate-400">
+                                <span>Kurang</span>
+                                <div class="flex gap-0.5">
+                                    <div class="heatmap-cell heatmap-0"></div>
+                                    <div class="heatmap-cell heatmap-1"></div>
+                                    <div class="heatmap-cell heatmap-2"></div>
+                                    <div class="heatmap-cell heatmap-3"></div>
+                                    <div class="heatmap-cell heatmap-4"></div>
+                                </div>
+                                <span>Banyak</span>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList"></div>
-                </div>
-            </div>
-
-            <!-- SECTION REKAP -->
-            <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
-                <!-- Rekap Tilawah -->
-                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full overflow-hidden">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI TILAWAH</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
-                                Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
-                            <select id="filterRekapTahun" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
-                            <button onclick="exportRekapCSV()" class="flex items-center gap-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">
-                                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                CSV
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Date Range Filter Tilawah -->
-                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm w-max mb-4">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
-                        <input type="date" id="tilawahStartDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
-                        <input type="date" id="tilawahEndDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-                    </div>
-                    
-                    <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
-                        <table class="w-full text-xs text-left table-rekap min-w-[600px] table-sticky-header">
-                            <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
-                                <tr>
-                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[15%]">NAMA</th>
-                                    <th colspan="5" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
-                                </tr>
-                                <tr class="bg-brand-600 text-white font-bold text-[10px]">
-                                    <th class="px-2 py-2 border-r border-brand-500/50">KHOLAS</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50">PROGRESS</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50">TDK LAPOR</th>
-                                    <th class="px-2 py-2 border-r border-brand-500/50">KURANG 1 JUZ</th>
-                                    <th class="px-2 py-2">TDK TILAWAH</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-rekap-tilawah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
-                        </table>
                     </div>
                 </div>
 
-                <!-- Rekap Mutabaah -->
-                <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
-                        <div>
-                            <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
-                            <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
-                                Jumlah Hari Terisi per Amalan — Periode: 
-                                <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
-                            </p>
-                        </div>
-                        
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <!-- Date Range Filter Mutabaah -->
-                            <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
-                                <input type="date" id="mutabaahStartDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-                                <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
-                                <input type="date" id="mutabaahEndDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                <!-- SECTION MUTABAAH -->
+                <div id="section-mutabaah" class="scroll-mt-24 hidden w-full animate-fade-in">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-5 md:p-8">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="relative w-16 h-16 shrink-0">
+                                    <svg class="w-16 h-16 transform -rotate-90">
+                                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" fill="none" class="text-slate-100 dark:text-slate-800"/>
+                                        <circle id="mutabaahProgressRing" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="6" fill="none" stroke-linecap="round" class="progress-ring-circle" stroke-dasharray="176" stroke-dashoffset="176"/>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span id="mutabaahProgressText" class="text-xs font-extrabold text-brand-600">0%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-base md:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mutaba'ah Yaumiyah</h3>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Ceklis amalan harian — <span id="mutabaahNama" class="font-bold text-brand-600"></span></p>
+                                </div>
                             </div>
                             
-                            <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">15 Amalan</span>
-                        </div>
-                    </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-1 shadow-sm">
+                                    <button onclick="navigateMutabaahPeriod(-1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan sebelumnya">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                                    </button>
+                                    <span id="mutabaahPeriodeLabel" class="text-xs font-bold text-slate-700 dark:text-slate-200 px-1 min-w-[100px] text-center"></span>
+                                    <button onclick="navigateMutabaahPeriod(1)" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-600 dark:text-slate-300 transition" title="Bulan berikutnya">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                                    </button>
+                                </div>
 
-                    <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
-                        <table class="w-full text-xs text-left table-rekap min-w-[1200px] table-sticky-header">
-                            <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
-                                <tr>
-                                    <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
-                                    <th id="header-kriteria-mutabaah" colspan="15" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
-                                </tr>
-                                <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight"></tr>
-                            </thead>
-                            <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
-                        </table>
+                                <button onclick="completeAllMutabaah()" class="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Semua
+                                </button>
+                                <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-sm">
+                                    <svg class="icon-sm text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    <input type="date" id="mutabaahDateInput" onchange="onMutabaahDateChange()" class="bg-transparent font-bold text-sm text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="mutabaahList"></div>
                     </div>
                 </div>
 
-                <!-- Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">Proporsi — <span id="chartNamaLabel"></span></h4>
+                <!-- SECTION REKAP -->
+                <div id="section-rekap" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full overflow-hidden">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
+                            <div>
+                                <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI TILAWAH</h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">Periode: <span id="rekapPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span></p>
+                            </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <select id="filterRekapBulan" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
+                                <select id="filterRekapTahun" onchange="onFilterRekapChange()" class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs font-bold focus:outline-none cursor-pointer"></select>
+                                <button onclick="exportRekapCSV()" class="flex items-center gap-1 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow-sm">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                    CSV
+                                </button>
+                            </div>
                         </div>
-                        <div class="relative h-56"><canvas id="chartDonut"></canvas></div>
-                        <div id="customLegendDonut" class="flex flex-wrap justify-center gap-3 mt-4 text-[10px] font-semibold text-slate-600 dark:text-slate-400"></div>
+                        <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm w-max mb-4">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
+                            <input type="date" id="tilawahStartDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
+                            <input type="date" id="tilawahEndDate" onchange="onTilawahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                        </div>
+                        
+                        <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
+                            <table class="w-full text-xs text-left table-rekap min-w-[600px] table-sticky-header">
+                                <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
+                                    <tr>
+                                        <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[15%]">NAMA</th>
+                                        <th colspan="5" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
+                                    </tr>
+                                    <tr class="bg-brand-600 text-white font-bold text-[10px]">
+                                        <th class="px-2 py-2 border-r border-brand-500/50">KHOLAS</th>
+                                        <th class="px-2 py-2 border-r border-brand-500/50">PROGRESS</th>
+                                        <th class="px-2 py-2 border-r border-brand-500/50">TDK LAPOR</th>
+                                        <th class="px-2 py-2 border-r border-brand-500/50">KURANG 1 JUZ</th>
+                                        <th class="px-2 py-2">TDK TILAWAH</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rekap-tilawah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
+                            </table>
+                        </div>
                     </div>
+
+                    <div id="card-rekap-mutabaah" class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-4 md:p-5 w-full hidden-menu overflow-hidden">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 mb-4 gap-3">
+                            <div>
+                                <h2 class="text-base font-black text-slate-900 dark:text-white uppercase tracking-tight">REKAPITULASI MUTABA'AH YAUMIYAH</h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                                    Jumlah Hari Terisi per Amalan — Periode: 
+                                    <span id="rekapMutabaahPeriode" class="text-brand-600 dark:text-brand-400 font-bold"></span>
+                                </p>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 shadow-sm">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">Dari</span>
+                                    <input type="date" id="mutabaahStartDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">S/d</span>
+                                    <input type="date" id="mutabaahEndDate" onchange="onMutabaahRangeChange()" class="bg-transparent font-bold text-xs text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
+                                </div>
+                                
+                                <span id="badge-jumlah-amalan" class="text-[10px] bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-black px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">15 Amalan</span>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-xl w-full max-w-full pb-2">
+                            <table class="w-full text-xs text-left table-rekap min-w-[1200px] table-sticky-header">
+                                <thead class="text-xs uppercase bg-brand-600 text-white font-extrabold text-center shadow-md">
+                                    <tr>
+                                        <th rowspan="2" class="px-3 py-3 border-r border-brand-500/50 text-center align-middle sticky left-0 bg-brand-600 z-20 w-[10%]">NAMA</th>
+                                        <th id="header-kriteria-mutabaah" colspan="15" class="px-2 py-3 border-b border-brand-500/50 text-center tracking-widest bg-brand-600">KRITERIA</th>
+                                    </tr>
+                                    <tr id="thead-kolom-mutabaah" class="bg-brand-600 text-white font-bold text-[9px] leading-tight"></tr>
+                                </thead>
+                                <tbody id="tbody-rekap-mutabaah" class="divide-y divide-slate-200 dark:divide-slate-800 font-medium bg-white dark:bg-slate-900 text-center"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">Proporsi — <span id="chartNamaLabel"></span></h4>
+                            </div>
+                            <div class="relative h-56"><canvas id="chartDonut"></canvas></div>
+                            <div id="customLegendDonut" class="flex flex-wrap justify-center gap-3 mt-4 text-[10px] font-semibold text-slate-600 dark:text-slate-400"></div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+                            <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4">Perbandingan Anggota</h4>
+                            <div class="relative h-64"><canvas id="chartBar"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION STATISTIK (DIHIDUPKAN KEMBALI) -->
+                <div id="section-stats" class="scroll-mt-24 hidden space-y-6 w-full animate-fade-in">
+                    <!-- Auto Insight Card -->
+                    <div class="bg-gradient-to-br from-brand-600 to-brand-800 rounded-3xl p-6 md:p-8 text-white shadow-xl shadow-brand-500/20">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                                <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-extrabold">AI Insight & Analisis</h3>
+                                <p class="text-xs text-brand-100">Analisis otomatis dari data tilawahmu</p>
+                            </div>
+                        </div>
+                        <div id="insightContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+
+                    <!-- Leaderboard -->
                     <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
-                        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-4">Perbandingan Anggota</h4>
-                        <div class="relative h-64"><canvas id="chartBar"></canvas></div>
+                        <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                            <svg class="icon-md text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            Leaderboard Bulan Ini
+                        </h3>
+                        <div id="leaderboard" class="space-y-2"></div>
+                    </div>
+
+                    <!-- Trend Chart -->
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+                        <h3 class="text-base font-extrabold text-slate-900 dark:text-white mb-4">Trend 6 Bulan Terakhir</h3>
+                        <div class="relative h-72"><canvas id="chartTrend"></canvas></div>
                     </div>
                 </div>
             </div>
@@ -566,6 +633,10 @@
             <button id="mobile-menu-rekap" onclick="switchSection('section-rekap', 'rekap')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
                 <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 <span class="text-[10px] font-bold">Rekap</span>
+            </button>
+            <button id="mobile-menu-stats" onclick="switchSection('section-stats', 'stats')" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500 transition-colors duration-200">
+                <svg class="icon-md mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                <span class="text-[10px] font-bold">Stats</span>
             </button>
             <button onclick="toggleDarkMode()" class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-slate-500">
                 <svg class="icon-md dark:hidden mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
@@ -589,18 +660,25 @@
         <div id="sheetOptions" class="grid grid-cols-1 gap-2 pb-6"></div>
     </div>
 
-    <!-- LOGIN MODAL -->
+    <!-- LOGIN MODAL (MULTI-USER) -->
     <div id="loginModal" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-sm z-50 hidden transition-opacity flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm p-6 border border-slate-200 dark:border-slate-800 animate-bounce-in">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Login Editor</h3>
+                <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Login Anggota</h3>
                 <button onclick="closeLoginModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center">
                     <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">Masuk untuk mengakses menu Mutaba'ah dan Rekapnya.</p>
-            <input type="password" id="loginPassword" placeholder="Masukkan Password" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 mb-4 text-sm" onkeydown="if(event.key==='Enter') handleLogin()">
+            <p class="text-xs text-slate-500 mb-4">Masuk untuk mengedit datamu sendiri. Admin bisa mengedit semua.</p>
+            
+            <label class="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1 block">Nama Anggota</label>
+            <select id="loginNama" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 mb-3 text-sm font-bold"></select>
+
+            <label class="text-xs font-bold text-slate-600 dark:text-slate-400 mb-1 block">PIN / Password</label>
+            <input type="password" id="loginPassword" placeholder="Masukkan PIN" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-brand-500 mb-4 text-sm" onkeydown="if(event.key==='Enter') handleLogin()">
+            
             <button onclick="handleLogin()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl transition shadow-sm">Masuk</button>
+            <p class="text-[10px] text-center text-slate-400 mt-3">PIN default: <b>123456</b> | Admin: <b>adminodoj</b></p>
         </div>
     </div>
 
@@ -625,26 +703,14 @@
 
         const BULAN_LIST = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
         let ANGGOTA = ["Daman","Dendi","Gugum","Risyad","Rojak"];
-        const AUTH_KEY = 'ODOJ_IS_LOGGED_IN';
-        const PASSWORD_ADMIN = 'adminodoj'; 
-
-        // PEMBARUAN: Daftar Mutabaah Baru
+        const AUTH_KEY = 'ODOJ_SESSION';
+        
         const MUTABAAH_LIST = [
-            "Qiyamullail",
-            "Shalat Witir",
-            "Tilawah Al-Qur'an 1 Juz",
-            "Baca Terjemah Al-Qur'an",
-            "Mendo'akan Palestina",
-            "Mendo'akan Qiyadah & Jamaah PKS",
-            "Istighfar 100x",
-            "Shalawat 100x",
-            "Infaq",
-            "Shalat Dhuha",
-            "Shalat Shubuh Berjamaah di Masjid",
-            "Shalat Dzuhur Berjamaah di Masjid",
-            "Shalat Ashar Berjamaah di Masjid",
-            "Shalat Maghrib Berjamaah di Masjid",
-            "Shalat Isya Berjamaah di Masjid"
+            "Qiyamullail", "Shalat Witir", "Tilawah Al-Qur'an 1 Juz", "Baca Terjemah Al-Qur'an", 
+            "Mendo'akan Palestina", "Mendo'akan Qiyadah & Jamaah PKS", "Istighfar 100x", 
+            "Shalawat 100x", "Infaq", "Shalat Dhuha", "Shalat Shubuh Berjamaah di Masjid", 
+            "Shalat Dzuhur Berjamaah di Masjid", "Shalat Ashar Berjamaah di Masjid", 
+            "Shalat Maghrib Berjamaah di Masjid", "Shalat Isya Berjamaah di Masjid"
         ];
 
         const ICONS = {
@@ -664,6 +730,7 @@
             { id:'tidak-tilawah', label:'Tidak Tilawah',       icon: ICONS.x,         color:'#dc2626' },
         ];
 
+        // State
         let tilawahStartDate = '';
         let tilawahEndDate = '';
         let mutabaahStartDate = '';
@@ -671,16 +738,26 @@
         let selectedBulan = new Date().getMonth();
         let selectedTahun = new Date().getFullYear();
         let selectedNama = ANGGOTA[0];
+        let currentUser = null; // { nama: 'Daman', role: 'admin'|'member' }
         let dataStore = {};
         let mutabaahStore = {};
         let activeEditDay = null;
         let currentMutabaahDate = '';
-        let chartDonut, chartBar;
+        let chartDonut, chartBar, chartTrend;
         let searchQuery = '';
 
         const getDaysInMonth = (m,y) => new Date(y, m+1, 0).getDate();
         const getKey = () => `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}`;
         const getMonthKey = (nama) => `${getKey()}|${nama}`;
+
+        // Avatar Generator
+        function getAvatar(nama) {
+            const colors = ['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#f97316'];
+            const hash = nama.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const color = colors[hash % colors.length];
+            const initial = nama.charAt(0).toUpperCase();
+            return `<div class="avatar" style="background:${color}">${initial}</div>`;
+        }
 
         // ==================== TOAST ====================
         function showToast(message, type = 'info', duration = 3000) {
@@ -701,12 +778,10 @@
             }, duration);
         }
 
-        // ==================== HAPTIC ====================
         function haptic(pattern = [10]) {
             if (navigator.vibrate) navigator.vibrate(pattern);
         }
 
-        // ==================== CONFETTI ====================
         function fireConfetti() {
             const colors = ['#10b981','#f59e0b','#3b82f6','#ec4899','#8b5cf6'];
             for (let i = 0; i < 50; i++) {
@@ -736,6 +811,11 @@
                     if (cloudData.tilawah) dataStore = cloudData.tilawah;
                     if (cloudData.mutabaah) mutabaahStore = cloudData.mutabaah;
                 }
+                
+                // Hide skeleton, show content
+                document.getElementById('skeletonLoader').classList.add('hidden');
+                document.getElementById('actualContent').classList.remove('hidden');
+
                 populateFilters();
                 populateRekapFilters();
                 renderAll();
@@ -744,18 +824,15 @@
                 }
             }, (error) => {
                 console.error("Gagal membaca database:", error);
-                showToast("Gagal terhubung ke database. Periksa Rules Firebase.", 'error', 5000);
+                showToast("Gagal terhubung ke database.", 'error', 5000);
+                document.getElementById('skeletonLoader').innerHTML = '<div class="p-8 text-center text-rose-500 font-bold">Gagal memuat data. Periksa koneksi internet.</div>';
             });
         }
 
         function saveData() {
-            const payload = {
-                anggota: ANGGOTA,
-                tilawah: dataStore,
-                mutabaah: mutabaahStore
-            };
+            const payload = { anggota: ANGGOTA, tilawah: dataStore, mutabaah: mutabaahStore };
             set(dbRef, payload).catch((error) => {
-                console.error("Gagal menyimpan data:", error);
+                console.error("Gagal menyimpan:", error);
                 showToast("Gagal menyimpan ke cloud", 'error');
             });
         }
@@ -777,46 +854,60 @@
             if(dataStore[key]) { delete dataStore[key][day]; saveData(); }
         }
 
-        // ==================== AUTH ====================
+        // ==================== AUTH (MULTI-USER) ====================
         function checkAuth() {
-            const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+            const session = localStorage.getItem(AUTH_KEY);
+            if (session) {
+                try { currentUser = JSON.parse(session); } catch { currentUser = null; }
+            }
+            
             const btnText = document.getElementById('auth-btn-text');
             const btn = document.getElementById('auth-btn');
-            
             const menuDesktopMutabaah = document.getElementById('menu-mutabaah');
             const menuMobileMutabaah = document.getElementById('mobile-menu-mutabaah');
             const cardRekapMutabaah = document.getElementById('card-rekap-mutabaah');
+            const fab = document.getElementById('fabQuickLog');
 
-            if (isLoggedIn) {
-                btnText.textContent = 'Logout';
-                btn.classList.replace('bg-slate-800', 'bg-rose-600');
-                btn.classList.replace('hover:bg-slate-900', 'hover:bg-rose-700');
+            if (currentUser) {
+                btnText.textContent = currentUser.role === 'admin' ? 'Admin' : currentUser.nama;
+                btn.classList.replace('bg-slate-800', 'bg-brand-600');
+                btn.classList.replace('hover:bg-slate-900', 'hover:bg-brand-700');
+                
                 menuDesktopMutabaah.classList.remove('hidden-menu');
                 menuDesktopMutabaah.classList.add('flex');
                 menuMobileMutabaah.classList.remove('hidden-menu');
                 menuMobileMutabaah.classList.add('flex');
                 cardRekapMutabaah.classList.remove('hidden-menu');
+                if (fab) fab.classList.remove('hidden');
             } else {
                 btnText.textContent = 'Login';
-                btn.classList.replace('bg-rose-600', 'bg-slate-800');
-                btn.classList.replace('hover:bg-rose-700', 'hover:bg-slate-900');
+                btn.classList.replace('bg-brand-600', 'bg-slate-800');
+                btn.classList.replace('hover:bg-brand-700', 'hover:bg-slate-900');
                 menuDesktopMutabaah.classList.add('hidden-menu');
                 menuDesktopMutabaah.classList.remove('flex');
                 menuMobileMutabaah.classList.add('hidden-menu');
                 menuMobileMutabaah.classList.remove('flex');
                 cardRekapMutabaah.classList.add('hidden-menu');
+                if (fab) fab.classList.add('hidden');
+                
                 const isMutabaahActive = !document.getElementById('section-mutabaah').classList.contains('hidden');
                 if (isMutabaahActive) switchSection('section-harian', 'harian');
             }
         }
 
         function handleAuthClick() {
-            if (localStorage.getItem(AUTH_KEY) === 'true') {
-                localStorage.removeItem(AUTH_KEY);
-                checkAuth();
-                renderRekapDanKPI();
-                showToast('Berhasil logout', 'info');
+            if (currentUser) {
+                if(confirm('Yakin ingin logout?')) {
+                    localStorage.removeItem(AUTH_KEY);
+                    currentUser = null;
+                    checkAuth();
+                    renderRekapDanKPI();
+                    showToast('Berhasil logout', 'info');
+                }
             } else {
+                // Isi dropdown nama di modal login
+                const loginNama = document.getElementById('loginNama');
+                loginNama.innerHTML = ANGGOTA.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="ADMIN">-- Admin --</option>`;
                 document.getElementById('loginModal').classList.remove('hidden');
                 document.getElementById('loginPassword').value = '';
                 setTimeout(() => document.getElementById('loginPassword').focus(), 100);
@@ -828,17 +919,41 @@
         }
 
         function handleLogin() {
+            const nama = document.getElementById('loginNama').value;
             const pass = document.getElementById('loginPassword').value;
-            if (pass === PASSWORD_ADMIN) {
-                localStorage.setItem(AUTH_KEY, 'true');
-                checkAuth();
-                closeLoginModal();
-                renderRekapDanKPI();
-                showToast('Login berhasil! Menu Mutabaah dibuka', 'success');
+            
+            if (nama === 'ADMIN') {
+                if (pass === 'adminodoj') {
+                    currentUser = { nama: 'Admin', role: 'admin' };
+                } else {
+                    showToast('PIN Admin salah!', 'error');
+                    haptic([50, 30, 50]);
+                    return;
+                }
             } else {
-                showToast('Password salah!', 'error');
-                haptic([50, 30, 50]);
+                // PIN default anggota adalah 123456 (bisa diubah di masa depan)
+                if (pass === '123456') {
+                    currentUser = { nama: nama, role: 'member' };
+                    // Paksa pilih nama sendiri saat login sebagai anggota
+                    selectedNama = nama;
+                } else {
+                    showToast('PIN salah! Gunakan 123456', 'error');
+                    haptic([50, 30, 50]);
+                    return;
+                }
             }
+
+            localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+            checkAuth();
+            closeLoginModal();
+            renderAll();
+            showToast(`Selamat datang, ${currentUser.nama}!`, 'success');
+        }
+
+        function canEdit(nama) {
+            if (!currentUser) return false;
+            if (currentUser.role === 'admin') return true;
+            return currentUser.nama === nama;
         }
 
         // ==================== FILTERS ====================
@@ -849,7 +964,9 @@
             const filtered = ANGGOTA.filter(n => n.toLowerCase().includes(searchQuery.toLowerCase()));
             let optionsHtml = filtered.map(n=>`<option value="${n}" ${n===selectedNama?'selected':''}>${n}</option>`).join('');
             if (filtered.length === 0) optionsHtml = `<option value="">Tidak ditemukan</option>`;
-            optionsHtml += `<option value="ADD_NEW" class="font-bold text-brand-600">+ Tambah Anggota</option>`;
+            if (currentUser && currentUser.role === 'admin') {
+                optionsHtml += `<option value="ADD_NEW" class="font-bold text-brand-600">+ Tambah Anggota</option>`;
+            }
             fn.innerHTML = optionsHtml;
         }
 
@@ -867,7 +984,6 @@
             ft.innerHTML = years;
         }
 
-        // Sinkronisasi Tanggal Tilawah
         function syncTilawahDateInputs() {
             const startInput = document.getElementById('tilawahStartDate');
             const endInput = document.getElementById('tilawahEndDate');
@@ -893,7 +1009,6 @@
             renderRekapDanKPI();
         }
 
-        // Sinkronisasi Tanggal Mutabaah
         function syncMutabaahDateInputs() {
             const startInput = document.getElementById('mutabaahStartDate');
             const endInput = document.getElementById('mutabaahEndDate');
@@ -943,6 +1058,12 @@
                 }
                 document.getElementById('filterNama').value = selectedNama;
             } else {
+                // Jika anggota login, cegah melihat/edit orang lain di tab mutabaah
+                if (currentUser && currentUser.role === 'member' && val !== currentUser.nama) {
+                    showToast('Anda hanya bisa mengedit data sendiri.', 'warning');
+                    document.getElementById('filterNama').value = currentUser.nama;
+                    return;
+                }
                 selectedNama = val;
                 renderAll();
                 initMutabaahDateInput();
@@ -951,23 +1072,32 @@
 
         // ==================== NAVIGATION ====================
         function switchSection(sectionId, menuId) {
-            if ((sectionId === 'section-mutabaah') && localStorage.getItem(AUTH_KEY) !== 'true') {
+            if ((sectionId === 'section-mutabaah') && !currentUser) {
                 handleAuthClick();
                 return;
             }
 
-            ['section-harian', 'section-mutabaah', 'section-rekap'].forEach(id => {
+            ['section-harian', 'section-mutabaah', 'section-rekap', 'section-stats'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) { el.classList.add('hidden'); el.classList.remove('fade-in'); }
             });
             
             const activeEl = document.getElementById(sectionId);
             if (!activeEl) return;
-            activeEl.classList.remove('hidden');
-            void activeEl.offsetWidth; 
-            activeEl.classList.add('fade-in');
             
-            const menus = ['harian', 'mutabaah', 'rekap'];
+            // View Transitions API
+            if (document.startViewTransition) {
+                document.startViewTransition(() => {
+                    activeEl.classList.remove('hidden');
+                    activeEl.classList.add('fade-in');
+                });
+            } else {
+                activeEl.classList.remove('hidden');
+                void activeEl.offsetWidth; 
+                activeEl.classList.add('fade-in');
+            }
+            
+            const menus = ['harian', 'mutabaah', 'rekap', 'stats'];
             const activeClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 bg-white dark:bg-slate-800 text-brand-700 dark:text-brand-300 shadow-sm border border-slate-200 dark:border-slate-700 font-bold text-sm';
             const inactiveClass = 'w-full py-3 px-4 rounded-xl transition flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-semibold text-sm';
             const mobileActive = 'flex flex-col items-center justify-center w-full h-full text-brand-600 dark:text-brand-400 transition-colors duration-200';
@@ -986,11 +1116,12 @@
                 }
             });
 
-            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': "Mutaba'ah Yaumiyah", 'rekap': 'Rekap & Grafik' };
+            const titles = { 'harian': 'Ikhtisar Tilawah', 'mutabaah': "Mutaba'ah Yaumiyah", 'rekap': 'Rekap & Grafik', 'stats': 'Statistik & Insight' };
             document.getElementById('page-title').textContent = titles[menuId] || '';
             
             if (menuId === 'mutabaah') initMutabaahDateInput();
             if (menuId === 'rekap') { populateRekapFilters(); renderRekapDanKPI(); }
+            if (menuId === 'stats') renderStats();
         }
 
         // ==================== DARK MODE ====================
@@ -999,6 +1130,7 @@
             localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             if (chartDonut) chartDonut.update();
             if (chartBar) chartBar.update();
+            if (chartTrend) chartTrend.update();
         }
         
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -1106,7 +1238,6 @@
             grid.innerHTML = html;
         }
 
-        // ==================== HEATMAP ====================
         function renderHeatmap() {
             const container = document.getElementById('heatmapContainer');
             if (!container) return;
@@ -1172,7 +1303,6 @@
             if (idx > 11) { idx = 0; tahun++; }
             if (tahun < 2024) tahun = 2024;
             if (tahun > 2030) tahun = 2030;
-            
             selectedBulan = idx;
             selectedTahun = tahun;
             currentMutabaahDate = `${selectedTahun}-${String(selectedBulan+1).padStart(2,'0')}-01`;
@@ -1204,12 +1334,14 @@
                 text.textContent = percent + '%';
             }
             
+            const editable = canEdit(selectedNama);
             let html = '';
             MUTABAAH_LIST.forEach((item, index) => {
                 const isChecked = currentData[index] === true;
                 const checkedClass = isChecked ? 'checked' : '';
+                const disabledClass = editable ? '' : 'opacity-60 cursor-not-allowed';
                 html += `
-                    <div class="mutabaah-item ${checkedClass}" onclick="toggleMutabaah('${storeKey}', ${index})">
+                    <div class="mutabaah-item ${checkedClass} ${disabledClass}" onclick="${editable ? `toggleMutabaah('${storeKey}', ${index})` : ''}">
                         <span class="text-sm font-semibold text-slate-700 dark:text-slate-300 pr-2">${item}</span>
                         <div class="mutabaah-checkbox">
                             <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
@@ -1221,6 +1353,7 @@
         }
 
         function toggleMutabaah(storeKey, index) {
+            if (!canEdit(selectedNama)) { showToast('Anda tidak punya akses mengedit ini.', 'error'); return; }
             haptic([5]);
             if (!mutabaahStore[storeKey]) { mutabaahStore[storeKey] = {}; }
             mutabaahStore[storeKey][index] = !mutabaahStore[storeKey][index];
@@ -1229,6 +1362,7 @@
         }
 
         function completeAllMutabaah() {
+            if (!canEdit(selectedNama)) { showToast('Anda tidak punya akses mengedit ini.', 'error'); return; }
             if (!currentMutabaahDate) return;
             const day = parseInt(currentMutabaahDate.split('-')[2]);
             const storeKey = `${getKey()}|${selectedNama}|${day}`;
@@ -1242,6 +1376,30 @@
                 showToast('Semua amalan dicentang! 🎉', 'success');
                 fireConfetti();
             }
+        }
+
+        // ==================== QUICK LOG (FAB) ====================
+        function quickLogToday() {
+            if (!currentUser) { handleAuthClick(); return; }
+            const now = new Date();
+            selectedBulan = now.getMonth();
+            selectedTahun = now.getFullYear();
+            const today = now.getDate();
+            
+            // Cek apakah hari ini sudah diisi
+            const existing = getRecord(selectedNama, today);
+            if (existing) {
+                showToast('Hari ini sudah dilaporkan! Edit di kalender.', 'info');
+                switchSection('section-harian', 'harian');
+                return;
+            }
+            
+            // Set default Kholas
+            setRecord(selectedNama, today, 'kholas');
+            renderAll();
+            haptic([20, 50, 20]);
+            fireConfetti();
+            showToast(`Tilawah hari ini (${today}) tersimpan: Kholas!`, 'success');
         }
 
         // ==================== STATS ====================
@@ -1277,7 +1435,6 @@
             document.getElementById('kpiHariTerisi').textContent = meStats.terisi;
             document.getElementById('kpiTotalHari').textContent = meStats.totalHari;
 
-            // Update Label Periode Tilawah
             const periodeTilawahEl = document.getElementById('rekapPeriode');
             if (periodeTilawahEl && tilawahStartDate && tilawahEndDate) {
                 const d1 = parseInt(tilawahStartDate.split('-')[2]);
@@ -1297,7 +1454,10 @@
                 return `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
                         <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                            ${nama} ${isActive ? ' <span class="text-[9px] bg-brand-600 text-white px-1.5 py-0.5 rounded ml-1">Aktif</span>' : ''}
+                            <div class="flex items-center gap-2">
+                                ${getAvatar(nama)}
+                                <span>${nama} ${isActive ? ' <span class="text-[9px] bg-brand-600 text-white px-1.5 py-0.5 rounded ml-1">Aktif</span>' : ''}</span>
+                            </div>
                         </td>
                         <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-brand-700 dark:text-brand-400">${fmtVal(s.kholas)}</td>
                         <td class="px-2 py-3 border-r border-slate-200 dark:border-slate-800 align-middle text-amber-700 dark:text-amber-400">${fmtVal(s.progress)}</td>
@@ -1307,7 +1467,6 @@
                     </tr>`;
             }).join('');
 
-            // Update Label Periode Mutabaah
             const periodeEl = document.getElementById('rekapMutabaahPeriode');
             if (periodeEl && mutabaahStartDate && mutabaahEndDate) {
                 const d1 = parseInt(mutabaahStartDate.split('-')[2]);
@@ -1319,7 +1478,7 @@
                 }
             }
 
-            if (localStorage.getItem(AUTH_KEY) === 'true') {
+            if (currentUser) {
                 const tbodyRekapMutabaah = document.getElementById('tbody-rekap-mutabaah');
                 const theadKolomMutabaah = document.getElementById('thead-kolom-mutabaah');
                 const headerKriteriaMutabaah = document.getElementById('header-kriteria-mutabaah');
@@ -1341,14 +1500,16 @@
                     return `
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition ${isActive}">
                             <td class="px-3 py-3 font-bold text-slate-900 dark:text-slate-100 border-r border-slate-200 dark:border-slate-800 text-center align-middle sticky left-0 bg-white dark:bg-slate-900 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
-                                ${nama} ${isActive ? ' <span class="text-[9px] bg-brand-600 text-white px-1.5 py-0.5 rounded ml-1">Aktif</span>' : ''}
+                                <div class="flex items-center gap-2">
+                                    ${getAvatar(nama)}
+                                    <span>${nama}</span>
+                                </div>
                             </td>
                             ${cells}
                         </tr>`;
                 }).join('');
             }
 
-            // PEMBARUAN: Tampilkan angka di Legend Donut
             const legendWrap = document.getElementById('customLegendDonut');
             legendWrap.innerHTML = STATUS.map((s) => `
                 <div class="flex items-center gap-1.5">
@@ -1430,6 +1591,154 @@
             });
         }
 
+        // ==================== STATS SECTION (AI INSIGHT) ====================
+        function renderStats() {
+            renderInsight();
+            renderLeaderboard();
+            renderTrendChart();
+        }
+
+        function renderInsight() {
+            const container = document.getElementById('insightContainer');
+            if (!container) return;
+            
+            // 1. Analisis Hari Terbaik & Terburuk
+            const dayStats = [0,0,0,0,0,0,0]; // Ahad - Sabtu
+            const dayCounts = [0,0,0,0,0,0,0];
+            const total = getDaysInMonth(selectedBulan, selectedTahun);
+            
+            for (let day = 1; day <= total; day++) {
+                const rec = getRecord(selectedNama, day);
+                const d = new Date(selectedTahun, selectedBulan, day).getDay();
+                dayCounts[d]++;
+                if (rec && rec.status === 'kholas') dayStats[d]++;
+            }
+            
+            const daysIndo = ["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+            let bestDay = 0, bestScore = -1, worstDay = 0, worstScore = 100;
+            for (let i = 0; i < 7; i++) {
+                const score = dayCounts[i] > 0 ? (dayStats[i] / dayCounts[i]) * 100 : 0;
+                if (score > bestScore) { bestScore = score; bestDay = i; }
+                if (score < worstScore) { worstScore = score; worstDay = i; }
+            }
+            
+            // 2. Perbandingan Bulan Lalu
+            let prevM = selectedBulan - 1, prevY = selectedTahun;
+            if (prevM < 0) { prevM = 11; prevY--; }
+            const prevTotal = getDaysInMonth(prevM, prevY);
+            let prevKholas = 0;
+            const prevKey = `${prevY}-${String(prevM+1).padStart(2,'0')}|${selectedNama}`;
+            if (dataStore[prevKey]) {
+                for (let d = 1; d <= prevTotal; d++) {
+                    if (dataStore[prevKey][d] && dataStore[prevKey][d].status === 'kholas') prevKholas++;
+                }
+            }
+            const currentKholas = computeStats(selectedNama).kholas;
+            const diff = currentKholas - prevKholas;
+            const diffText = diff > 0 ? `+${diff} hari lebih baik! 📈` : diff < 0 ? `${diff} hari lebih rendah 📉` : `Sama saja ➡️`;
+            const diffColor = diff > 0 ? 'text-emerald-300' : diff < 0 ? 'text-rose-300' : 'text-brand-200';
+
+            // 3. Total Centang Mutabaah
+            const { stats: mutStats } = computeMutabaahStatsPerAmalan(selectedNama);
+            const totalCentang = mutStats.reduce((a,b) => a+b, 0);
+            const maxCentang = MUTABAAH_LIST.length * total;
+            const persenMutabaah = maxCentang > 0 ? Math.round((totalCentang / maxCentang) * 100) : 0;
+
+            container.innerHTML = `
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                    <div class="text-[10px] uppercase tracking-widest text-brand-200 font-bold mb-1">Hari Paling Rajin</div>
+                    <div class="text-xl font-extrabold">${daysIndo[bestDay]}</div>
+                    <div class="text-xs text-brand-100 mt-1">Rata-rata ${Math.round(bestScore)}% kholas di hari ini.</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                    <div class="text-[10px] uppercase tracking-widest text-brand-200 font-bold mb-1">Hari Perlu Perbaikan</div>
+                    <div class="text-xl font-extrabold">${daysIndo[worstDay]}</div>
+                    <div class="text-xs text-brand-100 mt-1">Rata-rata hanya ${Math.round(worstScore)}% kholas.</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                    <div class="text-[10px] uppercase tracking-widest text-brand-200 font-bold mb-1">vs Bulan Lalu</div>
+                    <div class="text-xl font-extrabold ${diffColor}">${diffText}</div>
+                    <div class="text-xs text-brand-100 mt-1">Bulan lalu: ${prevKholas} hari kholas.</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20">
+                    <div class="text-[10px] uppercase tracking-widest text-brand-200 font-bold mb-1">Total Mutabaah</div>
+                    <div class="text-xl font-extrabold">${totalCentang} <span class="text-sm font-normal text-brand-200">/ ${maxCentang}</span></div>
+                    <div class="text-xs text-brand-100 mt-1">Konsistensi mutabaah: ${persenMutabaah}%.</div>
+                </div>
+            `;
+        }
+
+        function renderLeaderboard() {
+            const container = document.getElementById('leaderboard');
+            if (!container) return;
+            const scores = ANGGOTA.map(n => {
+                const s = computeStats(n);
+                const total = s.kholas * 5 + s.progress * 3 + s.kurang * 1;
+                return { nama: n, score: total, kholas: s.kholas, persen: s.persenKholas };
+            }).sort((a,b) => b.score - a.score);
+
+            const medals = ['🥇','🥈','🥉'];
+            container.innerHTML = scores.map((s, i) => `
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
+                    <div class="w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm ${i < 3 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">${i < 3 ? medals[i] : i+1}</div>
+                    ${getAvatar(s.nama)}
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-sm text-slate-800 dark:text-slate-200 truncate">${s.nama}</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">${s.kholas} hari kholas • ${s.persen}%</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-extrabold text-brand-600">${s.score}</p>
+                        <p class="text-[9px] text-slate-400">poin</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTrendChart() {
+            if (typeof Chart === 'undefined') return;
+            const canvas = document.getElementById('chartTrend');
+            if (!canvas) return;
+            if (chartTrend) chartTrend.destroy();
+
+            const months = [];
+            for (let i = 5; i >= 0; i--) {
+                let m = selectedBulan - i;
+                let y = selectedTahun;
+                while (m < 0) { m += 12; y--; }
+                months.push({ m, y, label: `${BULAN_LIST[m].slice(0,3)} ${y}` });
+            }
+
+            const datasets = [{
+                label: 'Kholas',
+                data: months.map(({m, y}) => {
+                    let count = 0;
+                    const total = getDaysInMonth(m, y);
+                    const key = `${y}-${String(m+1).padStart(2,'0')}|${selectedNama}`;
+                    if (dataStore[key]) {
+                        for (let d = 1; d <= total; d++) {
+                            if (dataStore[key][d] && dataStore[key][d].status === 'kholas') count++;
+                        }
+                    }
+                    return count;
+                }),
+                borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.4
+            }];
+
+            const isDark = document.documentElement.classList.contains('dark');
+            chartTrend = new Chart(canvas, {
+                type: 'line',
+                data: { labels: months.map(m => m.label), datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { display: false } },
+                        y: { beginAtZero: true, ticks: { precision: 0, color: isDark ? '#94a3b8' : '#64748b', font: { size: 10 } }, grid: { color: isDark ? 'rgba(148,163,184,0.1)' : 'rgba(100,116,139,0.1)' } }
+                    }
+                }
+            });
+        }
+
         // ==================== SHEET ====================
         function buildSheetOptions() {
             const wrap = document.getElementById('sheetOptions');
@@ -1446,6 +1755,7 @@
         }
 
         function openSheet(day) {
+            if (!canEdit(selectedNama)) { showToast('Anda tidak punya akses mengedit ini.', 'error'); return; }
             activeEditDay = day;
             const dateObj = new Date(selectedTahun, selectedBulan, day);
             const daysIndo = ["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
@@ -1509,6 +1819,39 @@
             showToast('Rekap CSV berhasil di-download', 'success');
         }
 
+        // ==================== PULL TO REFRESH ====================
+        let touchStartY = 0;
+        let isPulling = false;
+        const mainScroll = document.getElementById('mainScroll');
+        const ptrIndicator = document.getElementById('ptrIndicator');
+        
+        if (mainScroll && ptrIndicator) {
+            mainScroll.addEventListener('touchstart', (e) => {
+                if (mainScroll.scrollTop === 0) {
+                    touchStartY = e.touches[0].clientY;
+                    isPulling = true;
+                }
+            }, { passive: true });
+            
+            mainScroll.addEventListener('touchmove', (e) => {
+                if (!isPulling) return;
+                const deltaY = e.touches[0].clientY - touchStartY;
+                if (deltaY > 60) {
+                    ptrIndicator.classList.add('active');
+                }
+            }, { passive: true });
+            
+            mainScroll.addEventListener('touchend', () => {
+                if (ptrIndicator.classList.contains('active')) {
+                    ptrIndicator.classList.add('refreshing');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500);
+                }
+                isPulling = false;
+            }, { passive: true });
+        }
+
         // ==================== PWA ====================
         let swRegistration = null;
         let refreshing = false;
@@ -1517,54 +1860,8 @@
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').then(reg => {
                     swRegistration = reg;
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                document.getElementById('updateBanner').classList.remove('hidden');
-                                document.getElementById('updateBanner').classList.add('flex');
-                            }
-                        });
-                    });
                 }).catch(err => console.log('SW registration failed', err));
             });
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (refreshing) return;
-                refreshing = true;
-                window.location.reload();
-            });
-        }
-
-        function updateApp() {
-            if (swRegistration && swRegistration.waiting) {
-                swRegistration.waiting.postMessage('SKIP_WAITING');
-            }
-        }
-
-        // ==================== KEYBOARD ====================
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-            if (e.key === 'Escape') { closeSheet(); closeLoginModal(); }
-            if (e.key === 'ArrowLeft' && !document.getElementById('section-harian').classList.contains('hidden')) navigatePeriod(-1);
-            if (e.key === 'ArrowRight' && !document.getElementById('section-harian').classList.contains('hidden')) navigatePeriod(1);
-        });
-
-        // ==================== SWIPE ====================
-        let touchStartX = 0;
-        let touchStartY = 0;
-        const calContainer = document.getElementById('calendarContainer');
-        if (calContainer) {
-            calContainer.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-            }, { passive: true });
-            calContainer.addEventListener('touchend', (e) => {
-                const dx = e.changedTouches[0].screenX - touchStartX;
-                const dy = e.changedTouches[0].screenY - touchStartY;
-                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
-                    navigatePeriod(dx > 0 ? -1 : 1);
-                }
-            }, { passive: true });
         }
 
         // ==================== EXPOSE ====================
@@ -1583,11 +1880,11 @@
         window.pickDelete = pickDelete;
         window.toggleMutabaah = toggleMutabaah;
         window.completeAllMutabaah = completeAllMutabaah;
+        window.quickLogToday = quickLogToday;
         window.onMutabaahDateChange = onMutabaahDateChange;
         window.onFilterRekapChange = onFilterRekapChange;
         window.exportData = exportData;
         window.exportRekapCSV = exportRekapCSV;
-        window.updateApp = updateApp;
         window.navigateMutabaahPeriod = navigateMutabaahPeriod;
         window.onMutabaahRangeChange = onMutabaahRangeChange;
         window.onTilawahRangeChange = onTilawahRangeChange;
@@ -1599,13 +1896,15 @@
             renderCalendar();
             renderRekapDanKPI();
             document.getElementById('sheetOverlay').addEventListener('click', closeSheet);
+            
+            // Jangan panggil switchSection secara langsung jika skeleton masih tampil
             switchSection('section-harian', 'harian');
+            
             initFirebaseSync();
             
-            // Check URL params
             const params = new URLSearchParams(window.location.search);
             const section = params.get('section');
-            if (section === 'mutabaah' && localStorage.getItem(AUTH_KEY) === 'true') {
+            if (section === 'mutabaah' && currentUser) {
                 switchSection('section-mutabaah', 'mutabaah');
             } else if (section === 'rekap') {
                 switchSection('section-rekap', 'rekap');
